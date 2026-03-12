@@ -42,6 +42,12 @@ export default function RootLayout({
             </Link>
             <div className="flex items-center gap-2">
               <Link
+                href="/history"
+                className="rounded-md px-2 py-1.5 text-sm text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"
+              >
+                履歴
+              </Link>
+              <Link
                 href="/about"
                 className="rounded-md px-2 py-1.5 text-sm text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"
               >

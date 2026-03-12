@@ -56,16 +56,15 @@ export function BlurReveal({
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, filter: "blur(12px)", y: 10 },
+    hidden: { opacity: 0, y: 10 },
     visible: {
       opacity: 1,
-      filter: "blur(0px)",
       y: 0,
       transition: {
         duration: baseDuration,
       },
     },
-    exit: { opacity: 0, filter: "blur(12px)", y: 10 },
+    exit: { opacity: 0, y: 10 },
   }
 
   return (

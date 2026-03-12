@@ -20,6 +20,7 @@ export default function ViewPage() {
   const [mode, setMode] = useState<ViewMode>("view");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isShared, setIsShared] = useState(false);
   const [contentKey, setContentKey] = useState(0);
   const router = useRouter();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -39,6 +40,7 @@ export default function ViewPage() {
             setLoading(false);
             return;
           }
+          setIsShared(true);
         }
 
         if (!md) {
@@ -81,6 +83,11 @@ export default function ViewPage() {
     }, 300);
   }, []);
 
+  const handleOpenInEditor = useCallback(() => {
+    sessionStorage.setItem(STORAGE_KEY, markdown);
+    window.location.href = `${window.location.origin}/view`;
+  }, [markdown]);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -107,18 +114,30 @@ export default function ViewPage() {
 
   return (
     <div>
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Link
-          href="/"
-          className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
-        >
-          &larr; 新しいMarkdownを開く
-        </Link>
-        <div className="flex items-center gap-3">
-          <ModeToggle mode={mode} onChange={setMode} />
-          {markdown && <ShareButton markdown={markdown} />}
+      {isShared ? (
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm text-[var(--muted-foreground)]">共有されたドキュメント</p>
+          <button
+            onClick={handleOpenInEditor}
+            className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--card)] px-4 py-2 text-sm font-medium text-[var(--card-foreground)] transition-colors hover:bg-[var(--muted)]"
+          >
+            mado webで編集する
+          </button>
         </div>
-      </div>
+      ) : (
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <Link
+            href="/"
+            className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+          >
+            &larr; 新しいMarkdownを開く
+          </Link>
+          <div className="flex items-center gap-3">
+            <ModeToggle mode={mode} onChange={setMode} />
+            {markdown && <ShareButton markdown={markdown} />}
+          </div>
+        </div>
+      )}
 
       {mode === "view" && html && (
         <>
@@ -127,13 +146,13 @@ export default function ViewPage() {
         </>
       )}
 
-      {mode === "edit" && (
+      {mode === "edit" && !isShared && (
         <div className="rounded-xl border border-[var(--border)]">
           <EditorPane value={markdown} onChange={handleMarkdownChange} />
         </div>
       )}
 
-      {mode === "split" && (
+      {mode === "split" && !isShared && (
         <SplitView
           editor={<EditorPane value={markdown} onChange={handleMarkdownChange} />}
           preview={
