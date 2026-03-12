@@ -1,0 +1,290 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: oklch(0.98 0.005 250);
+  --foreground: oklch(0.15 0.02 250);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.02 250);
+  --muted: oklch(0.95 0.005 250);
+  --muted-foreground: oklch(0.5 0.01 250);
+  --border: oklch(0.9 0.005 250);
+  --primary: oklch(0.45 0.15 260);
+  --primary-foreground: oklch(0.98 0 0);
+  --accent: oklch(0.92 0.03 260);
+  --accent-foreground: oklch(0.25 0.05 260);
+  --ring: oklch(0.45 0.15 260);
+  --tab-active: oklch(0.45 0.15 260);
+  --tab-inactive: oklch(0.6 0.02 250);
+}
+
+.dark {
+  --background: oklch(0.12 0.01 250);
+  --foreground: oklch(0.93 0.005 250);
+  --card: oklch(0.17 0.01 250);
+  --card-foreground: oklch(0.93 0.005 250);
+  --muted: oklch(0.22 0.01 250);
+  --muted-foreground: oklch(0.6 0.01 250);
+  --border: oklch(0.28 0.01 250);
+  --primary: oklch(0.65 0.15 260);
+  --primary-foreground: oklch(0.12 0 0);
+  --accent: oklch(0.25 0.03 260);
+  --accent-foreground: oklch(0.85 0.05 260);
+  --ring: oklch(0.65 0.15 260);
+  --tab-active: oklch(0.65 0.15 260);
+  --tab-inactive: oklch(0.5 0.01 250);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "LINE Seed JP", system-ui, sans-serif;
+  letter-spacing: 0.02em;
+}
+
+/* Keyfact card */
+.keyfact-card {
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  border-left: 4px solid oklch(0.55 0.15 260);
+  background: oklch(0.95 0.02 260);
+  color: oklch(0.2 0.03 260);
+}
+.dark .keyfact-card {
+  background: oklch(0.2 0.03 260);
+  border-left-color: oklch(0.65 0.15 260);
+  color: oklch(0.9 0.01 260);
+}
+.keyfact-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: oklch(0.45 0.15 260);
+  margin-bottom: 0.25rem;
+}
+.dark .keyfact-label {
+  color: oklch(0.7 0.12 260);
+}
+.keyfact-card p {
+  margin: 0.25rem 0;
+}
+
+/* Delta card */
+.delta-card {
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  border-left: 4px solid oklch(0.55 0.18 155);
+  background: oklch(0.95 0.03 155);
+  color: oklch(0.2 0.03 155);
+}
+.dark .delta-card {
+  background: oklch(0.2 0.04 155);
+  border-left-color: oklch(0.6 0.15 155);
+  color: oklch(0.9 0.01 155);
+}
+.delta-badge {
+  display: inline-block;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  background: oklch(0.55 0.18 155);
+  color: white;
+  margin-bottom: 0.5rem;
+}
+.dark .delta-badge {
+  background: oklch(0.5 0.15 155);
+}
+.delta-card p {
+  margin: 0.25rem 0;
+}
+
+/* Prose: article-optimized typography */
+.prose {
+  --tw-prose-body: var(--foreground);
+  font-family: "LINE Seed JP", system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.85;
+  letter-spacing: 0.02em;
+}
+.prose :where(p) {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+}
+.prose :where(h2) {
+  margin-top: 2.5em;
+  margin-bottom: 0.75em;
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.4em;
+}
+.prose :where(h3) {
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.prose :where(ul, ol) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  padding-left: 1.5em;
+}
+.prose :where(li) {
+  margin-top: 0.35em;
+  margin-bottom: 0.35em;
+  line-height: 1.75;
+}
+.prose :where(blockquote) {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  padding-left: 1.25em;
+  border-left-color: var(--border);
+  font-style: normal;
+  color: var(--muted-foreground);
+}
+.prose :where(code):not(:where(pre *)) {
+  font-size: 0.875em;
+  padding: 0.15em 0.35em;
+  border-radius: 0.25rem;
+  background: var(--muted);
+}
+.prose :where(pre) {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  border-radius: 0.75rem;
+  padding: 1.25em;
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+.prose :where(strong) {
+  font-weight: 700;
+}
+.prose :where(a) {
+  text-underline-offset: 3px;
+}
+.prose :where(img) {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  border-radius: 0.5rem;
+}
+
+/* Mermaid diagrams (beautiful-mermaid) */
+.mermaid-diagram {
+  margin: 2em 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 0.75rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 1rem;
+}
+.mermaid-diagram svg {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Mermaid: force theme-aware colors on SVG elements */
+.mermaid-diagram text,
+.mermaid-diagram .nodeLabel,
+.mermaid-diagram .edgeLabel,
+.mermaid-diagram .label,
+.mermaid-diagram tspan {
+  fill: var(--foreground) !important;
+  color: var(--foreground) !important;
+}
+.mermaid-diagram .node rect,
+.mermaid-diagram .node circle,
+.mermaid-diagram .node polygon,
+.mermaid-diagram .node path {
+  fill: var(--muted) !important;
+  stroke: var(--border) !important;
+}
+.mermaid-diagram .edgePath path,
+.mermaid-diagram .flowchart-link {
+  stroke: var(--muted-foreground) !important;
+}
+.mermaid-diagram marker path {
+  fill: var(--muted-foreground) !important;
+}
+.mermaid-diagram .cluster rect {
+  fill: var(--accent) !important;
+  stroke: var(--border) !important;
+}
+
+/* Mermaid: ER diagram — larger text */
+.mermaid-diagram .entityBox {
+  fill: var(--muted) !important;
+  stroke: var(--border) !important;
+}
+.mermaid-diagram .entityLabel,
+.mermaid-diagram .relationshipLabel {
+  font-size: 14px !important;
+}
+.mermaid-diagram .er {
+  font-size: 13px !important;
+}
+
+/* Mermaid: sequence diagram */
+.mermaid-diagram .actor-line {
+  stroke: var(--border) !important;
+}
+.mermaid-diagram rect.actor {
+  fill: var(--muted) !important;
+  stroke: var(--border) !important;
+}
+.mermaid-diagram .messageLine0,
+.mermaid-diagram .messageLine1 {
+  stroke: var(--muted-foreground) !important;
+}
+
+/* Mermaid: state diagram */
+.mermaid-diagram .statediagram-state rect.basic {
+  fill: var(--muted) !important;
+  stroke: var(--border) !important;
+}
+
+/* Prose: table responsive */
+.prose :where(table) {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+}
+.prose :where(thead, tbody) {
+  display: table;
+  width: 100%;
+}
+.prose :where(hr) {
+  border-color: var(--border);
+}
+
+/* Prose overrides for dark mode */
+.dark .prose {
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-links: var(--primary);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-code: var(--foreground);
+  --tw-prose-pre-bg: var(--muted);
+  --tw-prose-pre-code: var(--foreground);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+  --tw-prose-hr: var(--border);
+  --tw-prose-counters: var(--muted-foreground);
+  --tw-prose-bullets: var(--muted-foreground);
+}
