@@ -6,6 +6,7 @@ import { BlurReveal } from "@/components/ui/blur-reveal";
 import { PasteArea } from "@/components/paste-area";
 import { PopButton } from "@/components/ui/pop-button";
 import { UnifiedDropZone } from "@/components/unified-drop-zone";
+import { MarkdownCard, MermaidCard, PrivacyCard } from "@/components/bento-grid";
 import type { VirtualFile } from "@/lib/virtual-fs";
 
 const STORAGE_KEY = "mado-markdown";
@@ -13,12 +14,21 @@ const WORKSPACE_KEY = "mado-workspace";
 
 export default function HomePage() {
   const [markdown, setMarkdown] = useState("");
+  const [hasRestored, setHasRestored] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const saved = sessionStorage.getItem(STORAGE_KEY);
-    if (saved) setMarkdown(saved);
+    if (saved) {
+      setMarkdown(saved);
+      setHasRestored(true);
+    }
   }, []);
+
+  const handleMarkdownChange = (val: string) => {
+    setMarkdown(val);
+    if (hasRestored) setHasRestored(false);
+  };
 
   const handleView = () => {
     if (!markdown.trim()) return;
@@ -77,14 +87,46 @@ export default function HomePage() {
         </span>
       </div>
 
+      {/* Before / After */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--muted)] p-4">
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">Before</span>
+          <pre className="mt-2 whitespace-pre-wrap font-mono text-xs leading-relaxed text-[var(--muted-foreground)]">{`# 見出し
+- **太字**のリスト
+- \`コード\`を含む項目
+
+| 列A | 列B |
+|-----|-----|
+| データ1 | データ2 |`}</pre>
+        </div>
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4">
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">After</span>
+          <div className="mt-2 text-sm leading-relaxed">
+            <h3 className="text-base font-bold text-[var(--foreground)]">見出し</h3>
+            <ul className="mt-1.5 ml-4 list-disc space-y-0.5 text-[var(--foreground)]">
+              <li><strong>太字</strong>のリスト</li>
+              <li><code className="rounded bg-[var(--muted)] px-1 py-0.5 text-xs font-mono">コード</code>を含む項目</li>
+            </ul>
+            <div className="mt-2 overflow-hidden rounded-lg border border-[var(--border)]">
+              <table className="w-full text-xs">
+                <thead><tr className="bg-[var(--muted)]"><th className="px-3 py-1 text-left font-medium">列A</th><th className="px-3 py-1 text-left font-medium">列B</th></tr></thead>
+                <tbody><tr className="border-t border-[var(--border)]"><td className="px-3 py-1">データ1</td><td className="px-3 py-1">データ2</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Primary: Paste Area */}
       <div className="flex flex-col gap-3">
         <PasteArea
           value={markdown}
-          onChange={setMarkdown}
+          onChange={handleMarkdownChange}
           onSubmit={handleView}
+          fontClass="font-sans"
+          showRestored={hasRestored}
         />
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <PopButton
             color="teal"
             size="lg"
@@ -94,12 +136,14 @@ export default function HomePage() {
           >
             見やすくする
           </PopButton>
-          <button
+          <PopButton
+            color="default"
+            size="lg"
             onClick={handleSample}
-            className="text-sm text-[var(--muted-foreground)] underline underline-offset-4 transition-colors hover:text-[var(--foreground)]"
+            className="w-full sm:w-auto"
           >
-            サンプルを見る
-          </button>
+            サンプルで体験
+          </PopButton>
         </div>
       </div>
 
@@ -109,6 +153,18 @@ export default function HomePage() {
         onMultipleFiles={handleMultipleFiles}
         compact
       />
+
+      {/* Feature highlights */}
+      <section>
+        <h2 className="mb-4 text-center text-sm font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">
+          できること
+        </h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <MarkdownCard />
+          <MermaidCard />
+          <PrivacyCard />
+        </div>
+      </section>
     </div>
   );
 }

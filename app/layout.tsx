@@ -81,7 +81,7 @@ export default function RootLayout({
           </div>
         </header>
         <main className="mx-auto max-w-4xl px-4 sm:px-6 py-8">{children}</main>
-        <footer className="border-t border-[var(--border)] mt-16">
+        <footer className="border-t border-[var(--border)] mt-16 pb-14">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 py-6 flex flex-wrap items-center justify-between gap-3 text-xs text-[var(--muted-foreground)]">
             <span>&copy; 2026 gmoriki</span>
             <div className="flex items-center gap-4">
