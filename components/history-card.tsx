@@ -48,7 +48,13 @@ export function HistoryCard({ item, onRemove }: HistoryCardProps) {
     <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 transition-colors hover:bg-[var(--muted)]">
       <div className="flex items-start gap-3">
         <div className="min-w-0 flex-1">
-          <a href={item.url} className="block hover:text-[var(--foreground)] transition-colors cursor-pointer">
+          <a
+            href={item.url}
+            onClick={() => {
+              sessionStorage.setItem('mado-nav-source', 'history');
+            }}
+            className="block hover:text-[var(--foreground)] transition-colors cursor-pointer"
+          >
             {preview}
           </a>
         </div>

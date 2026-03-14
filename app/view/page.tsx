@@ -57,7 +57,11 @@ export default function ViewPage() {
             setLoading(false);
             return;
           }
-          setIsShared(true);
+          const fromHistory = sessionStorage.getItem('mado-nav-source') === 'history';
+          sessionStorage.removeItem('mado-nav-source');
+          if (!fromHistory) {
+            setIsShared(true);
+          }
         }
 
         if (!md) {
@@ -148,14 +152,14 @@ export default function ViewPage() {
           </button>
         </div>
       ) : (
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <div className="mb-6 flex flex-col gap-3">
           <Link
             href="/"
             className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
           >
             &larr; 新しいMarkdownを開く
           </Link>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             <select
               value={activeFont}
               onChange={(e) => handleFontChange(e.target.value as FontId)}
