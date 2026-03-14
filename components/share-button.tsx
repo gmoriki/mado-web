@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { compressToFragment } from "@/lib/compress";
+import { compressToFragment, URL_LENGTH_WARNING } from "@/lib/compress";
 import { addShareHistory } from "@/lib/share-history";
 
 interface ShareButtonProps {
@@ -14,28 +14,15 @@ export function ShareButton({ markdown }: ShareButtonProps) {
 
   const handleShare = async () => {
     try {
-      setWarning(null);
+      const fragment = compressToFragment(markdown);
+      const url = `${window.location.origin}/view#${fragment}`;
 
-      // Try short URL via API first
-      let url: string;
-      try {
-        const res = await fetch("/api/share", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ markdown }),
-        });
-        if (!res.ok) throw new Error("api error");
-        const { id } = await res.json();
-        url = `${window.location.origin}/s/${id}`;
-      } catch {
-        // Fallback to hash-based URL
-        const fragment = compressToFragment(markdown);
-        url = `${window.location.origin}/view#${fragment}`;
-        if (url.length > 8000) {
-          setWarning(
-            `URL長が ${url.length.toLocaleString()} 文字です。一部のブラウザで共有できない場合があります。`
-          );
-        }
+      if (url.length > URL_LENGTH_WARNING) {
+        setWarning(
+          `URL長が ${url.length.toLocaleString()} 文字です。一部のブラウザで共有できない場合があります。`
+        );
+      } else {
+        setWarning(null);
       }
 
       await navigator.clipboard.writeText(url);

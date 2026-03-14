@@ -5,37 +5,37 @@
 
 :root {
   --font-body: "LINE Seed JP", system-ui, sans-serif;
-  --background: oklch(0.98 0.005 250);
-  --foreground: oklch(0.15 0.02 250);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.02 250);
-  --muted: oklch(0.95 0.005 250);
-  --muted-foreground: oklch(0.5 0.01 250);
-  --border: oklch(0.9 0.005 250);
+  --background: oklch(0.965 0.01 80);
+  --foreground: oklch(0.22 0.02 55);
+  --card: oklch(0.985 0.007 80);
+  --card-foreground: oklch(0.22 0.02 55);
+  --muted: oklch(0.94 0.01 80);
+  --muted-foreground: oklch(0.5 0.015 55);
+  --border: oklch(0.9 0.01 80);
   --primary: oklch(0.45 0.15 260);
   --primary-foreground: oklch(0.98 0 0);
   --accent: oklch(0.92 0.03 260);
   --accent-foreground: oklch(0.25 0.05 260);
   --ring: oklch(0.45 0.15 260);
   --tab-active: oklch(0.45 0.15 260);
-  --tab-inactive: oklch(0.6 0.02 250);
+  --tab-inactive: oklch(0.55 0.02 55);
 }
 
 .dark {
-  --background: oklch(0.12 0.01 250);
-  --foreground: oklch(0.93 0.005 250);
-  --card: oklch(0.17 0.01 250);
-  --card-foreground: oklch(0.93 0.005 250);
-  --muted: oklch(0.22 0.01 250);
-  --muted-foreground: oklch(0.6 0.01 250);
-  --border: oklch(0.28 0.01 250);
+  --background: oklch(0.19 0.015 265);
+  --foreground: oklch(0.90 0.01 80);
+  --card: oklch(0.23 0.015 265);
+  --card-foreground: oklch(0.90 0.01 80);
+  --muted: oklch(0.27 0.015 265);
+  --muted-foreground: oklch(0.62 0.01 80);
+  --border: oklch(0.32 0.015 265);
   --primary: oklch(0.65 0.15 260);
-  --primary-foreground: oklch(0.12 0 0);
-  --accent: oklch(0.25 0.03 260);
+  --primary-foreground: oklch(0.15 0 0);
+  --accent: oklch(0.27 0.03 260);
   --accent-foreground: oklch(0.85 0.05 260);
   --ring: oklch(0.65 0.15 260);
   --tab-active: oklch(0.65 0.15 260);
-  --tab-inactive: oklch(0.5 0.01 250);
+  --tab-inactive: oklch(0.52 0.01 80);
 }
 
 body {
