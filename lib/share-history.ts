@@ -41,12 +41,13 @@ export function addViewHistory(markdown: string): string {
   return id;
 }
 
-/** 共有ボタン押下時に呼ぶ。共有済みフラグを立てる */
-export function markAsShared(id: string): void {
+/** 共有ボタン押下時に呼ぶ。共有済みフラグを立て、URLを更新 */
+export function markAsShared(id: string, url?: string): void {
   const items = getShareHistory();
   const item = items.find((i) => i.id === id);
   if (item) {
     item.shared = true;
+    if (url) item.url = url;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }
 }

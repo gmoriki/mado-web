@@ -4,7 +4,10 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { markdownToHtml } from "@/lib/markdown";
 import { decompressFromFragment } from "@/lib/compress";
+import { importKey, decrypt } from "@/lib/crypto";
+import { getPaste } from "@/lib/paste-client";
 import { addViewHistory, markAsShared } from "@/lib/share-history";
+import { inflateSync, strFromU8 } from "fflate";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { TableOfContents } from "@/components/toc";
 import { ShareButton } from "@/components/share-button";
@@ -23,6 +26,7 @@ export default function ViewPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isShared, setIsShared] = useState(false);
+  const [isEncrypted, setIsEncrypted] = useState(false);
   const [contentKey, setContentKey] = useState(0);
   const [activeFont, setActiveFont] = useState<FontId>("line-seed-jp");
   const [historyId, setHistoryId] = useState<string | null>(null);
@@ -48,8 +52,39 @@ export default function ViewPage() {
       try {
         let md: string | null = null;
 
+        const searchParams = new URLSearchParams(window.location.search);
+        const pasteId = searchParams.get("id");
         const hash = window.location.hash.slice(1);
-        if (hash) {
+        let isExternalShare = false;
+
+        if (pasteId) {
+          // 暗号化ペーストモード
+          if (!hash) {
+            setError("共有URLに復号鍵が含まれていません。URLが不完全です。");
+            setLoading(false);
+            return;
+          }
+          let encryptedData: Uint8Array;
+          try {
+            encryptedData = await getPaste(pasteId);
+          } catch {
+            setError("共有ドキュメントが見つかりません。期限切れ（90日）の可能性があります。");
+            setLoading(false);
+            return;
+          }
+          try {
+            const key = await importKey(hash);
+            const compressed = await decrypt(encryptedData, key);
+            md = strFromU8(inflateSync(compressed));
+          } catch {
+            setError("ドキュメントの復号に失敗しました。URLが不完全な可能性があります。");
+            setLoading(false);
+            return;
+          }
+          setIsEncrypted(true);
+          isExternalShare = true;
+        } else if (hash) {
+          // レガシーフラグメントモード
           try {
             md = decompressFromFragment(hash);
           } catch {
@@ -57,6 +92,10 @@ export default function ViewPage() {
             setLoading(false);
             return;
           }
+          isExternalShare = true;
+        }
+
+        if (isExternalShare) {
           const fromHistory = sessionStorage.getItem('mado-nav-source') === 'history';
           sessionStorage.removeItem('mado-nav-source');
           if (!fromHistory) {
@@ -78,8 +117,7 @@ export default function ViewPage() {
         setHtml(rendered);
         setContentKey((k) => k + 1);
 
-        // 閲覧履歴に追加（共有URLから開いた場合は保存しない）
-        if (!hash) {
+        if (!isExternalShare) {
           const id = addViewHistory(md);
           setHistoryId(id);
         }
@@ -142,14 +180,30 @@ export default function ViewPage() {
   return (
     <div>
       {isShared ? (
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-[var(--muted-foreground)]">共有されたドキュメント</p>
-          <button
-            onClick={handleOpenInEditor}
-            className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--card)] px-4 py-2 text-sm font-medium text-[var(--card-foreground)] transition-colors hover:bg-[var(--muted)]"
-          >
-            mado webで編集する
-          </button>
+        <div className="mb-6 space-y-3">
+          {isEncrypted && (
+            <div className="flex items-start gap-2.5 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-950/50 px-4 py-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400">
+                <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              <div>
+                <p className="text-sm font-medium text-emerald-800 dark:text-emerald-200">End-to-End 暗号化で共有されています</p>
+                <p className="text-xs text-emerald-600/80 dark:text-emerald-400/80 mt-1">
+                  内容はブラウザで暗号化されてからサーバーに保存されました。「鍵」はこのURLだけに含まれており、サーバーには渡りません。このURLを知っている人だけが読めます。
+                </p>
+              </div>
+            </div>
+          )}
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            {!isEncrypted && <p className="text-sm text-[var(--muted-foreground)]">共有されたドキュメント</p>}
+            <button
+              onClick={handleOpenInEditor}
+              className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--card)] px-4 py-2 text-sm font-medium text-[var(--card-foreground)] transition-colors hover:bg-[var(--muted)]"
+            >
+              mado webで編集する
+            </button>
+          </div>
         </div>
       ) : (
         <div className="mb-6 flex flex-col gap-3">
