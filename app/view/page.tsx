@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { markdownToHtml } from "@/lib/markdown";
 import { decompressFromFragment } from "@/lib/compress";
@@ -30,11 +31,13 @@ export default function ViewPage() {
   const [contentKey, setContentKey] = useState(0);
   const [activeFont, setActiveFont] = useState<FontId>("line-seed-jp");
   const [historyId, setHistoryId] = useState<string | null>(null);
+  const [headerSlot, setHeaderSlot] = useState<HTMLElement | null>(null);
   const router = useRouter();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     setActiveFont(getStoredFont());
+    setHeaderSlot(document.getElementById("header-slot"));
   }, []);
 
   const handleFontChange = (fontId: FontId) => {
@@ -179,58 +182,57 @@ export default function ViewPage() {
 
   return (
     <div>
-      {isShared ? (
-        <div className="flex justify-end items-center gap-2 mb-3">
-          <button
-            onClick={handleOpenInEditor}
-            className="text-xs text-[var(--muted-foreground)] underline underline-offset-2 transition-colors hover:text-[var(--foreground)]"
-          >
-            編集する
-          </button>
-          {isEncrypted && (
-            <div className="group relative">
-              <div className="rounded-full p-1.5 text-emerald-500 dark:text-emerald-400 hover:bg-emerald-500/10 transition-colors cursor-default">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                </svg>
-              </div>
-              <div className="invisible group-hover:visible absolute right-0 top-full mt-1 z-50 w-72 rounded-xl border border-[var(--border)] bg-[var(--card)] p-3 shadow-lg">
-                <p className="text-xs font-medium text-[var(--foreground)] mb-1">End-to-End 暗号化</p>
-                <p className="text-xs text-[var(--muted-foreground)]">
-                  内容はブラウザで暗号化されてからサーバーに保存されました。「鍵」はこのURLだけに含まれており、サーバーには渡りません。このURLを知っている人だけが読めます。
-                </p>
-              </div>
+      {headerSlot && createPortal(
+        <>
+          <style>{`@media(max-width:639px){#header-nav{display:none!important}}`}</style>
+          {isShared ? (
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={handleOpenInEditor}
+                className="rounded-md px-1.5 py-1 text-xs text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"
+              >
+                編集する
+              </button>
+              {isEncrypted && (
+                <div className="group relative">
+                  <div className="rounded-full p-1 text-emerald-500 dark:text-emerald-400 hover:bg-emerald-500/10 transition-colors cursor-default">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
+                  </div>
+                  <div className="invisible group-hover:visible absolute right-0 top-full mt-1 z-50 w-72 rounded-xl border border-[var(--border)] bg-[var(--card)] p-3 shadow-lg">
+                    <p className="text-xs font-medium text-[var(--foreground)] mb-1">End-to-End 暗号化</p>
+                    <p className="text-xs text-[var(--muted-foreground)]">
+                      内容はブラウザで暗号化されてからサーバーに保存されました。「鍵」はこのURLだけに含まれており、サーバーには渡りません。このURLを知っている人だけが読めます。
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <label className="inline-flex items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--card)] px-1.5 py-1 text-[11px] sm:text-xs transition-colors hover:bg-[var(--muted)] cursor-pointer">
+                <span className="text-[var(--muted-foreground)]">Aa</span>
+                <select
+                  value={activeFont}
+                  onChange={(e) => handleFontChange(e.target.value as FontId)}
+                  className="bg-transparent text-[var(--card-foreground)] outline-none cursor-pointer"
+                >
+                  {(Object.keys(FONTS) as FontId[]).map((id) => (
+                    <option key={id} value={id}>
+                      {FONTS[id].label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <ModeToggle mode={mode} onChange={setMode} />
+              {markdown && <ShareButton markdown={markdown} historyId={historyId} />}
             </div>
           )}
-        </div>
-      ) : (
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
-          <Link
-            href="/"
-            className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
-          >
-            &larr; 新しいMarkdownを開く
-          </Link>
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            <label className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--card)] px-2 py-1.5 text-xs transition-colors hover:bg-[var(--muted)] cursor-pointer">
-              <span className="text-[var(--muted-foreground)]">Aa</span>
-              <select
-                value={activeFont}
-                onChange={(e) => handleFontChange(e.target.value as FontId)}
-                className="bg-transparent text-[var(--card-foreground)] outline-none cursor-pointer"
-              >
-              {(Object.keys(FONTS) as FontId[]).map((id) => (
-                <option key={id} value={id}>
-                  {FONTS[id].label}
-                </option>
-              ))}
-              </select>
-            </label>
-            <ModeToggle mode={mode} onChange={setMode} />
-            {markdown && <ShareButton markdown={markdown} historyId={historyId} />}
-          </div>
-        </div>
+          <div className="hidden sm:block w-px h-4 bg-[var(--border)]" />
+        </>,
+        headerSlot,
       )}
 
       {mode === "view" && html && (
