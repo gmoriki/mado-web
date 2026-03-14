@@ -68,18 +68,22 @@ export default function HomePage() {
           onChange={setMarkdown}
           onSubmit={handleView}
         />
-        <div className="flex items-center justify-center gap-3">
+        <div className="flex flex-col items-center gap-2">
           <PopButton
             color="indigo"
+            size="lg"
             onClick={handleView}
             disabled={!markdown.trim()}
             className="disabled:opacity-40"
           >
             表示する
           </PopButton>
-          <PopButton color="default" size="sm" onClick={handleSample}>
+          <button
+            onClick={handleSample}
+            className="text-sm text-[var(--muted-foreground)] underline underline-offset-4 transition-colors hover:text-[var(--foreground)]"
+          >
             サンプルを見る
-          </PopButton>
+          </button>
         </div>
       </div>
 

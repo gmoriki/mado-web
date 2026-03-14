@@ -35,7 +35,7 @@ export function PasteArea({ value, onChange, onSubmit }: PasteAreaProps) {
         )}
         {onSubmit && (
           <span className="opacity-60">
-            {navigator.platform?.includes("Mac") ? "⌘" : "Ctrl"}+Enter で表示
+            {/Mac|iPhone|iPad/.test(navigator.userAgent) ? "⌘" : "Ctrl"}+Enter で表示
           </span>
         )}
       </div>

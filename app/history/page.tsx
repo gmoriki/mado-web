@@ -13,6 +13,7 @@ import { HistoryCard } from "@/components/history-card";
 export default function HistoryPage() {
   const [items, setItems] = useState<ShareHistoryItem[]>([]);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [displayCount, setDisplayCount] = useState(20);
 
   useEffect(() => {
     setItems(getShareHistory());
@@ -81,11 +82,23 @@ export default function HistoryPage() {
           </Link>
         </div>
       ) : (
-        <div className="grid gap-3">
-          {items.map((item) => (
-            <HistoryCard key={item.id} item={item} onRemove={handleRemove} />
-          ))}
-        </div>
+        <>
+          <div className="grid gap-3">
+            {items.slice(0, displayCount).map((item) => (
+              <HistoryCard key={item.id} item={item} onRemove={handleRemove} />
+            ))}
+          </div>
+          {items.length > displayCount && (
+            <div className="mt-4 flex justify-center">
+              <button
+                onClick={() => setDisplayCount((c) => c + 20)}
+                className="rounded-lg border border-[var(--border)] px-4 py-2 text-sm text-[var(--muted-foreground)] transition-colors hover:bg-[var(--muted)]"
+              >
+                もっと見る（残り {items.length - displayCount} 件）
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

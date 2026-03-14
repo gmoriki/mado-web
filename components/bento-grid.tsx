@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
-import { FontSelector } from "@/components/font-selector";
 
 function BentoCard({
   className,
@@ -71,64 +69,6 @@ function MermaidCard() {
   );
 }
 
-function ThemeCard() {
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    setDark(document.documentElement.classList.contains("dark"));
-  }, []);
-
-  const toggle = () => {
-    const next = !dark;
-    setDark(next);
-    document.documentElement.classList.toggle("dark", next);
-    localStorage.setItem("theme", next ? "dark" : "light");
-  };
-
-  return (
-    <BentoCard>
-      <CardLabel>テーマ</CardLabel>
-      <div className="mt-3 flex flex-col items-center gap-3">
-        <div className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-3">
-          <div className="h-2 w-16 rounded bg-[var(--foreground)]" />
-          <div className="mt-2 h-1.5 w-full rounded bg-[var(--muted)]" />
-          <div className="mt-1 h-1.5 w-3/4 rounded bg-[var(--muted)]" />
-        </div>
-        <button
-          onClick={toggle}
-          className="flex items-center gap-2 rounded-lg border border-[var(--border)] px-3 py-1.5 text-xs font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--muted)]"
-        >
-          {dark ? (
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2v2" /><path d="M12 20v2" />
-              <path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" />
-              <path d="M2 12h2" /><path d="M20 12h2" />
-              <path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
-            </svg>
-          ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-            </svg>
-          )}
-          {dark ? "ライト" : "ダーク"}に切替
-        </button>
-      </div>
-    </BentoCard>
-  );
-}
-
-function FontCard() {
-  return (
-    <BentoCard>
-      <CardLabel>フォント</CardLabel>
-      <div className="mt-3">
-        <FontSelector />
-      </div>
-    </BentoCard>
-  );
-}
-
 function TableCard() {
   return (
     <BentoCard>
@@ -185,7 +125,7 @@ function CodeCard() {
 
 function PrivacyCard() {
   return (
-    <BentoCard className="sm:col-span-2 lg:col-span-3">
+    <BentoCard className="sm:col-span-2">
       <div className="flex items-center gap-4">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--primary)]">
@@ -205,10 +145,8 @@ function PrivacyCard() {
 
 export function BentoGrid() {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       <MermaidCard />
-      <ThemeCard />
-      <FontCard />
       <TableCard />
       <CodeCard />
       <PrivacyCard />
