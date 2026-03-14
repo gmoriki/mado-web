@@ -62,7 +62,11 @@ export function HistoryCard({ item, onRemove }: HistoryCardProps) {
       onClick={() => {
         sessionStorage.setItem("mado-nav-source", "history");
       }}
-      className="group relative flex min-h-[130px] flex-col justify-between rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 transition-all hover:border-[var(--muted-foreground)]/30 hover:shadow-md"
+      className={`group relative flex min-h-[130px] flex-col justify-between rounded-xl border p-4 transition-all hover:shadow-md ${
+        item.shared
+          ? "border-[var(--primary)]/30 bg-[var(--primary)]/[0.03] hover:border-[var(--primary)]/50"
+          : "border-[var(--border)] bg-[var(--card)] hover:border-[var(--muted-foreground)]/30"
+      }`}
     >
       {/* 削除ボタン — ホバー時のみ */}
       <button
@@ -94,23 +98,34 @@ export function HistoryCard({ item, onRemove }: HistoryCardProps) {
           {formatRelativeTime(item.createdAt)}
         </span>
         <div className="flex items-center gap-1.5">
-          {item.shared && (
+          {item.shared ? (
             <button
               onClick={handleCopy}
-              className="rounded-md p-1 text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"
+              className="inline-flex items-center gap-1 rounded-full bg-[var(--primary)]/10 px-2 py-0.5 text-[10px] font-medium text-[var(--primary)] transition-colors hover:bg-[var(--primary)]/20"
               title="共有URLをコピー"
             >
               {copied ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500">
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
+                <>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                  コピー!
+                </>
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-                </svg>
+                <>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                    <polyline points="16 6 12 2 8 6" />
+                    <line x1="12" x2="12" y1="2" y2="15" />
+                  </svg>
+                  共有済み
+                </>
               )}
             </button>
+          ) : (
+            <span className="text-[10px] text-[var(--muted-foreground)]">
+              閲覧のみ
+            </span>
           )}
         </div>
       </div>
