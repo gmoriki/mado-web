@@ -8,7 +8,7 @@ interface TocItem {
   level: number;
 }
 
-export function TableOfContents({ contentKey }: { contentKey?: string }) {
+export function TableOfContents({ contentKey, bottomBarVisible = false }: { contentKey?: string; bottomBarVisible?: boolean }) {
   const [items, setItems] = useState<TocItem[]>([]);
   const [open, setOpen] = useState(false);
   const [activeId, setActiveId] = useState<string>("");
@@ -72,7 +72,7 @@ export function TableOfContents({ contentKey }: { contentKey?: string }) {
   return (
     <>
       {/* Floating button */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className={`fixed right-6 z-50 transition-all duration-300 ${bottomBarVisible ? "bottom-[60px]" : "bottom-6"}`}>
         <button
           onClick={() => setOpen(!open)}
           className={`flex h-11 w-11 items-center justify-center rounded-full shadow-lg active:scale-95 transition-all ${

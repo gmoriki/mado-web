@@ -289,7 +289,7 @@ export default function ViewPage() {
       {mode === "view" && html && (
         <>
           <MarkdownRenderer html={html} />
-          <TableOfContents contentKey={String(contentKey)} />
+          <TableOfContents contentKey={String(contentKey)} bottomBarVisible={toolbarMode === "bottom" && toolbarVisible} />
         </>
       )}
 
@@ -306,7 +306,7 @@ export default function ViewPage() {
             html ? (
               <>
                 <MarkdownRenderer html={html} />
-                <TableOfContents contentKey={String(contentKey)} />
+                <TableOfContents contentKey={String(contentKey)} bottomBarVisible={toolbarMode === "bottom" && toolbarVisible} />
               </>
             ) : (
               <div className="p-4 text-[var(--muted-foreground)]">プレビュー生成中...</div>
