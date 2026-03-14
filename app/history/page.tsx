@@ -34,7 +34,7 @@ export default function HistoryPage() {
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-xl font-bold text-[var(--foreground)]">
-          共有の履歴
+          閲覧履歴
         </h1>
         {items.length > 0 &&
           (showConfirm ? (
@@ -72,7 +72,7 @@ export default function HistoryPage() {
       {items.length === 0 ? (
         <div className="flex flex-col items-center gap-4 py-20">
           <p className="text-[var(--muted-foreground)]">
-            共有の履歴はまだありません
+            閲覧履歴はまだありません
           </p>
           <Link
             href="/"

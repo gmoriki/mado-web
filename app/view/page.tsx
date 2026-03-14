@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { markdownToHtml } from "@/lib/markdown";
 import { decompressFromFragment } from "@/lib/compress";
+import { addViewHistory, markAsShared } from "@/lib/share-history";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { TableOfContents } from "@/components/toc";
 import { ShareButton } from "@/components/share-button";
@@ -24,6 +25,7 @@ export default function ViewPage() {
   const [isShared, setIsShared] = useState(false);
   const [contentKey, setContentKey] = useState(0);
   const [activeFont, setActiveFont] = useState<FontId>("line-seed-jp");
+  const [historyId, setHistoryId] = useState<string | null>(null);
   const router = useRouter();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -71,6 +73,12 @@ export default function ViewPage() {
         const rendered = await markdownToHtml(md);
         setHtml(rendered);
         setContentKey((k) => k + 1);
+
+        // 閲覧履歴に追加（共有URLから開いた場合は保存しない）
+        if (!hash) {
+          const id = addViewHistory(md);
+          setHistoryId(id);
+        }
       } catch {
         setError("Markdownの変換中にエラーが発生しました。");
       } finally {
@@ -160,7 +168,7 @@ export default function ViewPage() {
               ))}
             </select>
             <ModeToggle mode={mode} onChange={setMode} />
-            {markdown && <ShareButton markdown={markdown} />}
+            {markdown && <ShareButton markdown={markdown} historyId={historyId} />}
           </div>
         </div>
       )}

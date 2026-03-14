@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { compressToFragment, URL_LENGTH_WARNING } from "@/lib/compress";
-import { addShareHistory } from "@/lib/share-history";
+import { markAsShared } from "@/lib/share-history";
 
 interface ShareButtonProps {
   markdown: string;
+  historyId?: string | null;
 }
 
-export function ShareButton({ markdown }: ShareButtonProps) {
+export function ShareButton({ markdown, historyId }: ShareButtonProps) {
   const [copied, setCopied] = useState(false);
   const [warning, setWarning] = useState<string | null>(null);
 
@@ -26,7 +27,9 @@ export function ShareButton({ markdown }: ShareButtonProps) {
       }
 
       await navigator.clipboard.writeText(url);
-      addShareHistory(url, markdown);
+      if (historyId) {
+        markAsShared(historyId);
+      }
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
