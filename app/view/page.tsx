@@ -191,7 +191,7 @@ export default function ViewPage() {
     <div>
       {/* サブツールバー — スクロールダウンでフェードアウト */}
       <div
-        className={`sticky top-[53px] z-40 -mt-2 mb-4 flex flex-wrap items-center gap-2 pb-3 border-b border-[var(--border)] transition-all duration-300 ${
+        className={`sticky top-[53px] z-40 -mt-2 mb-8 flex flex-wrap items-center gap-2 pb-3 border-b border-[var(--border)] transition-all duration-300 ${
           toolbarHidden ? "opacity-0 -translate-y-2 pointer-events-none" : ""
         }`}
       >

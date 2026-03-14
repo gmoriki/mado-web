@@ -34,7 +34,7 @@ export default function HistoryPage() {
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-lg sm:text-xl font-bold text-[var(--foreground)]">
-          閲覧履歴
+          最近のドキュメント
         </h1>
         {items.length > 0 &&
           (showConfirm ? (
@@ -65,14 +65,13 @@ export default function HistoryPage() {
           ))}
       </div>
 
-      <p className="mb-6 text-sm text-[var(--muted-foreground)]">
-        履歴はこの端末のブラウザにのみ保存されています。共有したドキュメントは暗号化されてサーバーに90日間保存されますが、復号鍵はURL内にのみ存在するため、サーバーでは内容を読めません。ブラウザのデータを消去すると履歴は失われます。
-      </p>
-
       {items.length === 0 ? (
         <div className="flex flex-col items-center gap-4 py-20">
           <p className="text-[var(--muted-foreground)]">
-            閲覧履歴はまだありません
+            まだドキュメントがありません
+          </p>
+          <p className="text-sm text-[var(--muted-foreground)]">
+            ホームでMarkdownをペーストして表示すると、ここに履歴が残ります
           </p>
           <Link
             href="/"
@@ -83,7 +82,7 @@ export default function HistoryPage() {
         </div>
       ) : (
         <>
-          <div className="grid gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {items.slice(0, displayCount).map((item) => (
               <HistoryCard key={item.id} item={item} onRemove={handleRemove} />
             ))}
