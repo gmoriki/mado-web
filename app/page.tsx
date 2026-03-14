@@ -66,7 +66,10 @@ export default function HomePage() {
           コピペだけ。AIの回答がきれいなページに。
         </BlurReveal>
         <p className="mt-3 text-sm sm:text-base text-[var(--muted-foreground)] px-2">
-          表もコードも図も読みやすく。リンク1つで共有。データは外部に送信しません。
+          表もコードも図も読みやすく。リンク1つで共有。
+        </p>
+        <p className="mt-1.5 text-xs text-[var(--muted-foreground)]/70 px-2">
+          データは外部に送信しません
         </p>
       </div>
 
@@ -86,15 +89,15 @@ export default function HomePage() {
           size="lg"
           onClick={handleView}
           disabled={!markdown.trim()}
-          className="w-full sm:w-auto disabled:opacity-40"
+          className="w-full sm:w-auto disabled:opacity-50"
         >
-          見やすくする
+          ページにする
         </PopButton>
         <button
           onClick={handleSample}
           className="text-sm text-[var(--muted-foreground)] underline underline-offset-4 transition-colors hover:text-[var(--foreground)]"
         >
-          サンプルで体験
+          サンプルを見る
         </button>
       </div>
 
