@@ -180,33 +180,32 @@ export default function ViewPage() {
   return (
     <div>
       {isShared ? (
-        <div className="mb-6 space-y-3">
+        <div className="flex justify-end items-center gap-2 mb-3">
+          <button
+            onClick={handleOpenInEditor}
+            className="text-xs text-[var(--muted-foreground)] underline underline-offset-2 transition-colors hover:text-[var(--foreground)]"
+          >
+            編集する
+          </button>
           {isEncrypted && (
-            <div className="flex items-start gap-2.5 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-950/50 px-4 py-3">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400">
-                <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
-              <div>
-                <p className="text-sm font-medium text-emerald-800 dark:text-emerald-200">End-to-End 暗号化で共有されています</p>
-                <p className="text-xs text-emerald-600/80 dark:text-emerald-400/80 mt-1">
+            <div className="group relative">
+              <div className="rounded-full p-1.5 text-emerald-500 dark:text-emerald-400 hover:bg-emerald-500/10 transition-colors cursor-default">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+              </div>
+              <div className="invisible group-hover:visible absolute right-0 top-full mt-1 z-50 w-72 rounded-xl border border-[var(--border)] bg-[var(--card)] p-3 shadow-lg">
+                <p className="text-xs font-medium text-[var(--foreground)] mb-1">End-to-End 暗号化</p>
+                <p className="text-xs text-[var(--muted-foreground)]">
                   内容はブラウザで暗号化されてからサーバーに保存されました。「鍵」はこのURLだけに含まれており、サーバーには渡りません。このURLを知っている人だけが読めます。
                 </p>
               </div>
             </div>
           )}
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            {!isEncrypted && <p className="text-sm text-[var(--muted-foreground)]">共有されたドキュメント</p>}
-            <button
-              onClick={handleOpenInEditor}
-              className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--card)] px-4 py-2 text-sm font-medium text-[var(--card-foreground)] transition-colors hover:bg-[var(--muted)]"
-            >
-              mado webで編集する
-            </button>
-          </div>
         </div>
       ) : (
-        <div className="mb-6 flex flex-col gap-3">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
           <Link
             href="/"
             className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
