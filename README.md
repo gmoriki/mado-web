@@ -1,6 +1,10 @@
-# mado web
+<p align="center">
+  <img src="public/logo.png" alt="mado web" width="120" />
+</p>
 
-**Markdownを、誰でも美しく読める形に。**
+<h1 align="center">mado web</h1>
+
+<p align="center"><strong>Markdownを、誰でも美しく読める形に。</strong></p>
 
 ChatGPT や Claude の出力をペーストするだけで、表・リスト・Mermaid 図をきれいにレンダリング。データはブラウザ内で完結し、サーバーには一切送信されません。
 

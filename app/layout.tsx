@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeToggle } from "@/components/theme-toggle";
+import Image from "next/image";
 import Link from "next/link";
 import "@fontsource/line-seed-jp/400.css";
 import "@fontsource/line-seed-jp/700.css";
@@ -8,6 +9,13 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "mado web",
   description: "ブラウザ完結でMarkdownを美しく閲覧・共有",
+  icons: {
+    icon: [
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
@@ -51,8 +59,9 @@ export default function RootLayout({
           <div className="mx-auto flex max-w-4xl items-center justify-between px-4 sm:px-6 py-3">
             <Link
               href="/"
-              className="text-lg font-bold tracking-tight text-[var(--foreground)] transition-opacity hover:opacity-70"
+              className="flex items-center gap-2 text-lg font-bold tracking-tight text-[var(--foreground)] transition-opacity hover:opacity-70"
             >
+              <Image src="/logo.png" alt="mado web" width={28} height={28} />
               mado web
             </Link>
             <div className="flex items-center gap-2">
