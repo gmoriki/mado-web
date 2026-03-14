@@ -55,7 +55,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 min-h-[calc(100dvh-12rem)] justify-center">
       {/* Hero */}
       <div className="text-center">
         <BlurReveal

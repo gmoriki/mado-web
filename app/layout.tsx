@@ -53,7 +53,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen antialiased overflow-x-hidden">
+      <body className="min-h-screen antialiased overflow-x-hidden flex flex-col">
         <header className="sticky top-0 z-50 border-b border-[var(--border)] bg-[var(--background)]/80 backdrop-blur-md">
           <div className="mx-auto flex max-w-4xl items-center justify-between px-4 sm:px-6 py-3">
             <Link
@@ -80,8 +80,8 @@ export default function RootLayout({
             </div>
           </div>
         </header>
-        <main className="mx-auto max-w-4xl px-4 sm:px-6 py-8">{children}</main>
-        <footer className="border-t border-[var(--border)] mt-12">
+        <main className="mx-auto max-w-4xl px-4 sm:px-6 py-8 flex-1">{children}</main>
+        <footer className="border-t border-[var(--border)]">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 py-5 flex flex-col items-center gap-2 text-xs text-[var(--muted-foreground)]">
             <div className="flex items-center gap-3">
               <Link href="/terms" className="transition-colors hover:text-[var(--foreground)]">利用規約</Link>
