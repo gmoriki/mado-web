@@ -64,21 +64,18 @@ export default function RootLayout({
               mado web
             </Link>
             <div className="flex items-center gap-1 sm:gap-2">
-              <div id="header-slot" className="contents" />
-              <div id="header-nav" className="contents">
-                <Link
-                  href="/history"
-                  className="rounded-md px-1.5 py-1 sm:px-2 sm:py-1.5 text-sm text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"
-                >
-                  履歴
-                </Link>
-                <Link
-                  href="/about"
-                  className="rounded-md px-1.5 py-1 sm:px-2 sm:py-1.5 text-sm text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"
-                >
-                  使い方
-                </Link>
-              </div>
+              <Link
+                href="/history"
+                className="rounded-md px-1.5 py-1 sm:px-2 sm:py-1.5 text-sm text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"
+              >
+                履歴
+              </Link>
+              <Link
+                href="/about"
+                className="rounded-md px-1.5 py-1 sm:px-2 sm:py-1.5 text-sm text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"
+              >
+                使い方
+              </Link>
               <ThemeToggle />
             </div>
           </div>

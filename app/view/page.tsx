@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { markdownToHtml } from "@/lib/markdown";
 import { decompressFromFragment } from "@/lib/compress";
@@ -31,13 +30,24 @@ export default function ViewPage() {
   const [contentKey, setContentKey] = useState(0);
   const [activeFont, setActiveFont] = useState<FontId>("line-seed-jp");
   const [historyId, setHistoryId] = useState<string | null>(null);
-  const [headerSlot, setHeaderSlot] = useState<HTMLElement | null>(null);
+  const [toolbarHidden, setToolbarHidden] = useState(false);
   const router = useRouter();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     setActiveFont(getStoredFont());
-    setHeaderSlot(document.getElementById("header-slot"));
+  }, []);
+
+  // スクロール方向検出: 下スクロールでツールバーを隠す
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      setToolbarHidden(y > lastScrollY.current && y > 80);
+      lastScrollY.current = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const handleFontChange = (fontId: FontId) => {
@@ -61,7 +71,6 @@ export default function ViewPage() {
         let isExternalShare = false;
 
         if (pasteId) {
-          // 暗号化ペーストモード
           if (!hash) {
             setError("共有URLに復号鍵が含まれていません。URLが不完全です。");
             setLoading(false);
@@ -87,7 +96,6 @@ export default function ViewPage() {
           setIsEncrypted(true);
           isExternalShare = true;
         } else if (hash) {
-          // レガシーフラグメントモード
           try {
             md = decompressFromFragment(hash);
           } catch {
@@ -134,7 +142,6 @@ export default function ViewPage() {
     load();
   }, [router]);
 
-  // Debounced re-render on markdown edit
   const handleMarkdownChange = useCallback((newMarkdown: string) => {
     setMarkdown(newMarkdown);
     sessionStorage.setItem(STORAGE_KEY, newMarkdown);
@@ -182,58 +189,60 @@ export default function ViewPage() {
 
   return (
     <div>
-      {headerSlot && createPortal(
-        <>
-          <style>{`@media(max-width:639px){#header-nav{display:none!important}}`}</style>
-          {isShared ? (
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={handleOpenInEditor}
-                className="rounded-md px-1.5 py-1 text-xs text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"
-              >
-                編集する
-              </button>
-              {isEncrypted && (
-                <div className="group relative">
-                  <div className="rounded-full p-1 text-emerald-500 dark:text-emerald-400 hover:bg-emerald-500/10 transition-colors cursor-default">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-                      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                    </svg>
-                  </div>
-                  <div className="invisible group-hover:visible absolute right-0 top-full mt-1 z-50 w-72 rounded-xl border border-[var(--border)] bg-[var(--card)] p-3 shadow-lg">
-                    <p className="text-xs font-medium text-[var(--foreground)] mb-1">End-to-End 暗号化</p>
-                    <p className="text-xs text-[var(--muted-foreground)]">
-                      内容はブラウザで暗号化されてからサーバーに保存されました。「鍵」はこのURLだけに含まれており、サーバーには渡りません。このURLを知っている人だけが読めます。
-                    </p>
-                  </div>
+      {/* サブツールバー — スクロールダウンでフェードアウト */}
+      <div
+        className={`sticky top-[53px] z-40 -mt-2 mb-4 flex flex-wrap items-center gap-2 pb-3 border-b border-[var(--border)] transition-all duration-300 ${
+          toolbarHidden ? "opacity-0 -translate-y-2 pointer-events-none" : ""
+        }`}
+      >
+        {isShared ? (
+          <>
+            <button
+              onClick={handleOpenInEditor}
+              className="rounded-md px-2 py-1 text-xs text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"
+            >
+              編集する
+            </button>
+            {isEncrypted && (
+              <div className="group relative ml-auto">
+                <div className="rounded-full p-1 text-emerald-500 dark:text-emerald-400 hover:bg-emerald-500/10 transition-colors cursor-default">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
                 </div>
-              )}
-            </div>
-          ) : (
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <label className="inline-flex items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--card)] px-1.5 py-1 text-[11px] sm:text-xs transition-colors hover:bg-[var(--muted)] cursor-pointer">
-                <span className="text-[var(--muted-foreground)]">Aa</span>
-                <select
-                  value={activeFont}
-                  onChange={(e) => handleFontChange(e.target.value as FontId)}
-                  className="bg-transparent text-[var(--card-foreground)] outline-none cursor-pointer"
-                >
-                  {(Object.keys(FONTS) as FontId[]).map((id) => (
-                    <option key={id} value={id}>
-                      {FONTS[id].label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <ModeToggle mode={mode} onChange={setMode} />
+                <div className="invisible group-hover:visible absolute right-0 top-full mt-1 z-50 w-72 rounded-xl border border-[var(--border)] bg-[var(--card)] p-3 shadow-lg">
+                  <p className="text-xs font-medium text-[var(--foreground)] mb-1">End-to-End 暗号化</p>
+                  <p className="text-xs text-[var(--muted-foreground)]">
+                    内容はブラウザで暗号化されてからサーバーに保存されました。「鍵」はこのURLだけに含まれており、サーバーには渡りません。このURLを知っている人だけが読めます。
+                  </p>
+                </div>
+              </div>
+            )}
+          </>
+        ) : (
+          <>
+            <label className="inline-flex items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--card)] px-1.5 py-1 text-[11px] sm:text-xs transition-colors hover:bg-[var(--muted)] cursor-pointer">
+              <span className="text-[var(--muted-foreground)]">Aa</span>
+              <select
+                value={activeFont}
+                onChange={(e) => handleFontChange(e.target.value as FontId)}
+                className="bg-transparent text-[var(--card-foreground)] outline-none cursor-pointer"
+              >
+                {(Object.keys(FONTS) as FontId[]).map((id) => (
+                  <option key={id} value={id}>
+                    {FONTS[id].label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <ModeToggle mode={mode} onChange={setMode} />
+            <div className="ml-auto">
               {markdown && <ShareButton markdown={markdown} historyId={historyId} />}
             </div>
-          )}
-          <div className="hidden sm:block w-px h-4 bg-[var(--border)]" />
-        </>,
-        headerSlot,
-      )}
+          </>
+        )}
+      </div>
 
       {mode === "view" && html && (
         <>

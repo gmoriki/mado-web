@@ -87,7 +87,7 @@ export function ShareButton({ markdown, historyId }: ShareButtonProps) {
             <line x1="12" x2="12" y1="2" y2="15" />
           </svg>
         )}
-        {sharing ? "生成中..." : copied ? "コピーしました!" : "共有URLをコピー"}
+        {sharing ? "生成中..." : copied ? "コピー!" : "共有"}
       </button>
       {copied && encrypted && (
         <p className="absolute top-full right-0 mt-1 w-max max-w-xs rounded-lg bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-3 py-1.5 text-xs text-emerald-600 dark:text-emerald-400 shadow-sm">
