@@ -39,9 +39,12 @@ export function HistoryCard({ item, onRemove }: HistoryCardProps) {
 
   return (
     <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 transition-colors hover:bg-[var(--muted)]">
-      <p className="text-sm text-[var(--muted-foreground)] line-clamp-2">
+      <a
+        href={item.url}
+        className="block text-sm text-[var(--muted-foreground)] line-clamp-2 hover:text-[var(--foreground)] transition-colors cursor-pointer"
+      >
         {item.preview || "（プレビューなし）"}
-      </p>
+      </a>
       <div className="mt-3 flex items-center justify-between">
         <span className="text-xs text-[var(--muted-foreground)]">
           {formatRelativeTime(item.createdAt)}
