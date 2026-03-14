@@ -1,5 +1,16 @@
+# Build
 .next
 node_modules
 out
+tsconfig.tsbuildinfo
+
+# Local config
 .data
 .vercel
+.claude/
+.wrangler/
+
+# Internal docs
+plan/
+research/
+docs/plans/
