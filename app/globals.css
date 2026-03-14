@@ -12,12 +12,12 @@
   --muted: oklch(0.94 0.01 80);
   --muted-foreground: oklch(0.5 0.015 55);
   --border: oklch(0.9 0.01 80);
-  --primary: oklch(0.45 0.15 260);
+  --primary: oklch(0.45 0.12 175);
   --primary-foreground: oklch(0.98 0 0);
-  --accent: oklch(0.92 0.03 260);
-  --accent-foreground: oklch(0.25 0.05 260);
-  --ring: oklch(0.45 0.15 260);
-  --tab-active: oklch(0.45 0.15 260);
+  --accent: oklch(0.92 0.03 175);
+  --accent-foreground: oklch(0.25 0.05 175);
+  --ring: oklch(0.45 0.12 175);
+  --tab-active: oklch(0.45 0.12 175);
   --tab-inactive: oklch(0.55 0.02 55);
 }
 
@@ -29,12 +29,12 @@
   --muted: oklch(0.27 0.015 265);
   --muted-foreground: oklch(0.62 0.01 80);
   --border: oklch(0.32 0.015 265);
-  --primary: oklch(0.65 0.15 260);
+  --primary: oklch(0.65 0.12 175);
   --primary-foreground: oklch(0.15 0 0);
-  --accent: oklch(0.27 0.03 260);
-  --accent-foreground: oklch(0.85 0.05 260);
-  --ring: oklch(0.65 0.15 260);
-  --tab-active: oklch(0.65 0.15 260);
+  --accent: oklch(0.27 0.03 175);
+  --accent-foreground: oklch(0.85 0.05 175);
+  --ring: oklch(0.65 0.12 175);
+  --tab-active: oklch(0.65 0.12 175);
   --tab-inactive: oklch(0.52 0.01 80);
 }
 
@@ -51,14 +51,14 @@ body {
   margin: 1.5rem 0;
   padding: 1rem 1.25rem;
   border-radius: 0.75rem;
-  border-left: 4px solid oklch(0.55 0.15 260);
-  background: oklch(0.95 0.02 260);
-  color: oklch(0.2 0.03 260);
+  border-left: 4px solid oklch(0.55 0.12 175);
+  background: oklch(0.95 0.02 175);
+  color: oklch(0.2 0.03 175);
 }
 .dark .keyfact-card {
-  background: oklch(0.2 0.03 260);
-  border-left-color: oklch(0.65 0.15 260);
-  color: oklch(0.9 0.01 260);
+  background: oklch(0.2 0.03 175);
+  border-left-color: oklch(0.65 0.12 175);
+  color: oklch(0.9 0.01 175);
 }
 .keyfact-label {
   display: block;
@@ -66,11 +66,11 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: oklch(0.45 0.15 260);
+  color: oklch(0.45 0.12 175);
   margin-bottom: 0.25rem;
 }
 .dark .keyfact-label {
-  color: oklch(0.7 0.12 260);
+  color: oklch(0.7 0.12 175);
 }
 .keyfact-card p {
   margin: 0.25rem 0;

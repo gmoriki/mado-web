@@ -70,7 +70,7 @@ export default function HomePage() {
         />
         <div className="flex flex-col items-center gap-2">
           <PopButton
-            color="indigo"
+            color="teal"
             size="lg"
             onClick={handleView}
             disabled={!markdown.trim()}

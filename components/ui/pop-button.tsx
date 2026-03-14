@@ -8,6 +8,7 @@ type Color =
   | "purple"
   | "green"
   | "orange"
+  | "teal"
   | "indigo"
   | "violet"
   | "slate";
@@ -39,6 +40,7 @@ const PopButton = React.forwardRef<HTMLButtonElement, PopButtonProps>(
       purple: "bg-purple-500 hover:bg-purple-600 border-purple-800 text-white",
       green: "bg-green-500 hover:bg-green-600 border-green-800 text-white",
       orange: "bg-orange-500 hover:bg-orange-600 border-orange-800 text-white",
+      teal: "bg-teal-600 hover:bg-teal-700 border-teal-800 text-white",
       indigo: "bg-indigo-500 hover:bg-indigo-600 border-indigo-800 text-white",
       violet: "bg-violet-500 hover:bg-violet-600 border-violet-800 text-white",
       slate: "bg-slate-500 hover:bg-slate-600 border-slate-800 text-white",

@@ -35,9 +35,42 @@ function CardLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function MermaidCard() {
+function MarkdownCard() {
   return (
     <BentoCard className="sm:col-span-2">
+      <CardLabel>Markdownを美しく表示</CardLabel>
+      <div className="mt-3 rounded-xl bg-[var(--muted)] p-4 text-sm leading-relaxed">
+        <div className="space-y-2">
+          <div className="flex items-baseline gap-2">
+            <span className="text-lg font-bold text-[var(--foreground)]">#</span>
+            <span className="text-base font-bold text-[var(--foreground)]">見出しもリストも、そのまま</span>
+          </div>
+          <div className="ml-1 space-y-1 text-[var(--muted-foreground)]">
+            <div className="flex items-center gap-2">
+              <span className="text-[var(--primary)]">-</span>
+              <span>ChatGPTやClaudeの出力をペースト</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[var(--primary)]">-</span>
+              <span>表・リスト・コードブロックをきれいに整形</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[var(--primary)]">-</span>
+              <span className="font-medium text-[var(--foreground)]">**太字**</span>
+              <span>や</span>
+              <span className="font-mono text-xs rounded bg-[var(--card)] px-1.5 py-0.5">`コード`</span>
+              <span>もそのまま反映</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </BentoCard>
+  );
+}
+
+function MermaidCard() {
+  return (
+    <BentoCard>
       <CardLabel>Mermaid対応</CardLabel>
       <div className="mt-3 rounded-xl bg-[var(--muted)] p-4">
         <svg viewBox="0 0 320 70" className="w-full h-auto">
@@ -146,6 +179,7 @@ function PrivacyCard() {
 export function BentoGrid() {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <MarkdownCard />
       <MermaidCard />
       <TableCard />
       <CodeCard />

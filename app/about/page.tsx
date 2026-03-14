@@ -90,7 +90,7 @@ export default function AboutPage() {
         <p className="text-sm text-[var(--muted-foreground)]">
           インストール不要。ブラウザだけで、今すぐ。
         </p>
-        <PopButton color="indigo" size="lg" asChild>
+        <PopButton color="teal" size="lg" asChild>
           <Link href="/">試してみる</Link>
         </PopButton>
       </div>
