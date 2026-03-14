@@ -1,8 +1,6 @@
-import { compressToFragment } from "@/lib/compress";
-
 export interface ShareHistoryItem {
   id: string;
-  url: string;
+  url?: string;
   preview: string;
   createdAt: string;
   shared: boolean;
@@ -19,16 +17,13 @@ function extractPreview(markdown: string): string {
     .slice(0, 100);
 }
 
-/** 表示時に呼ぶ。履歴に追加し、IDを返す */
+/** 表示時に呼ぶ。プレビューだけ保存、URLは生成しない */
 export function addViewHistory(markdown: string): string {
   const items = getShareHistory();
-  const fragment = compressToFragment(markdown);
-  const url = `${window.location.origin}/view#${fragment}`;
   const id = crypto.randomUUID();
 
   const item: ShareHistoryItem = {
     id,
-    url,
     preview: extractPreview(markdown),
     createdAt: new Date().toISOString(),
     shared: false,
@@ -41,12 +36,13 @@ export function addViewHistory(markdown: string): string {
   return id;
 }
 
-/** 共有ボタン押下時に呼ぶ。既存エントリを共有済みにする */
-export function markAsShared(id: string): void {
+/** 共有ボタン押下時に呼ぶ。URLを保存し共有済みにする */
+export function markAsShared(id: string, url: string): void {
   const items = getShareHistory();
   const item = items.find((i) => i.id === id);
   if (item) {
     item.shared = true;
+    item.url = url;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }
 }
