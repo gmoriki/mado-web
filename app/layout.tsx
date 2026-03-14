@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { ThemeToggle } from "@/components/theme-toggle";
-import Image from "next/image";
 import Link from "next/link";
 import "@fontsource/line-seed-jp/400.css";
 import "@fontsource/line-seed-jp/700.css";
@@ -61,7 +60,7 @@ export default function RootLayout({
               href="/"
               className="flex items-center gap-2 text-lg font-bold tracking-tight text-[var(--foreground)] transition-opacity hover:opacity-70"
             >
-              <Image src="/logo.png" alt="mado web" width={28} height={28} />
+              <img src="/logo.png" alt="mado web" width={28} height={28} />
               mado web
             </Link>
             <div className="flex items-center gap-2">
