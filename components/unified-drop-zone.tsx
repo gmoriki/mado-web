@@ -8,6 +8,7 @@ import { categorizeFile, type VirtualFile } from "@/lib/virtual-fs";
 interface UnifiedDropZoneProps {
   onSingleFile: (content: string) => void;
   onMultipleFiles: (files: VirtualFile[]) => void;
+  compact?: boolean;
 }
 
 const SINGLE_FILE_EXTS = [".md", ".markdown", ".txt"];
@@ -15,6 +16,7 @@ const SINGLE_FILE_EXTS = [".md", ".markdown", ".txt"];
 export function UnifiedDropZone({
   onSingleFile,
   onMultipleFiles,
+  compact = false,
 }: UnifiedDropZoneProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -129,19 +131,55 @@ export function UnifiedDropZone({
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-10 transition-all ${
+        className={`flex cursor-pointer ${compact ? "flex-row items-center gap-3 rounded-xl border-2 border-dashed p-4" : "flex-col items-center justify-center rounded-2xl border-2 border-dashed p-10"} transition-all ${
           isDragging
             ? "border-[var(--primary)] bg-[var(--accent)] scale-[1.01]"
             : "border-[var(--border)] hover:border-[var(--muted-foreground)]"
         }`}
       >
         {loading ? (
-          <div className="flex flex-col items-center gap-3">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--primary)] border-t-transparent" />
+          <div className="flex items-center gap-3">
+            <div className={`${compact ? "h-5 w-5" : "h-8 w-8"} animate-spin rounded-full border-2 border-[var(--primary)] border-t-transparent`} />
             <p className="text-sm text-[var(--muted-foreground)]">
               読み込み中...
             </p>
           </div>
+        ) : compact ? (
+          <>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="shrink-0 text-[var(--muted-foreground)]"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" x2="12" y1="3" y2="15" />
+            </svg>
+            <span className="text-sm text-[var(--muted-foreground)]">
+              ファイル・フォルダ・ZIPをドロップ
+            </span>
+            <div className="ml-auto flex gap-1.5">
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="rounded-md border border-[var(--border)] bg-[var(--card)] px-3 py-1 text-xs font-medium text-[var(--card-foreground)] hover:bg-[var(--muted)] transition-colors"
+              >
+                ファイル
+              </button>
+              <button
+                onClick={() => folderInputRef.current?.click()}
+                className="rounded-md border border-[var(--border)] bg-[var(--card)] px-3 py-1 text-xs font-medium text-[var(--card-foreground)] hover:bg-[var(--muted)] transition-colors"
+              >
+                フォルダ
+              </button>
+            </div>
+          </>
         ) : (
           <>
             <svg

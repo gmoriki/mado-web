@@ -18,6 +18,10 @@ export default function RootLayout({
   return (
     <html lang="ja" suppressHydrationWarning>
       <head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=BIZ+UDPGothic:wght@400;700&display=swap"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -25,6 +29,17 @@ export default function RootLayout({
                 const theme = localStorage.getItem('theme');
                 if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                   document.documentElement.classList.add('dark');
+                }
+              } catch {}
+              try {
+                var fonts = {
+                  "line-seed-jp": '"LINE Seed JP", system-ui, sans-serif',
+                  "noto-sans-jp": '"Noto Sans JP", system-ui, sans-serif',
+                  "bizudpgothic": '"BIZ UDPGothic", system-ui, sans-serif'
+                };
+                var f = localStorage.getItem('mado-font');
+                if (f && fonts[f]) {
+                  document.documentElement.style.setProperty('--font-body', fonts[f]);
                 }
               } catch {}
             `,

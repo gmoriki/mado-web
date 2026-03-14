@@ -2,6 +2,7 @@
 
 import { BlurReveal } from "@/components/ui/blur-reveal";
 import { PopButton } from "@/components/ui/pop-button";
+import { BentoGrid } from "@/components/bento-grid";
 import Link from "next/link";
 
 const useCases = [
@@ -73,35 +74,13 @@ export default function AboutPage() {
         ))}
       </div>
 
-      {/* Features */}
-      <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)]/60 p-6 backdrop-blur-sm">
-        <h2 className="mb-4 text-lg font-bold text-[var(--foreground)]">
+      {/* Interactive Feature Grid */}
+      <section>
+        <h2 className="mb-4 text-center text-lg font-bold text-[var(--foreground)]">
           できること
         </h2>
-        <div className="grid gap-3 text-sm sm:grid-cols-2">
-          {[
-            ["GFM対応", "テーブル、チェックリスト、取り消し線"],
-            ["Mermaid図", "フローチャート、シーケンス図、ER図をSVGレンダリング"],
-            ["ダーク/ライト", "テーマ切替でどんな環境でも快適"],
-            ["Edit/Splitモード", "閲覧・編集・分割プレビューを自由に切替"],
-            ["目次", "見出しから自動生成、クリックでジャンプ"],
-            ["完全クライアント", "データはブラウザ内で処理。mado webのサーバーには一切保存されません"],
-          ].map(([title, desc]) => (
-            <div key={title} className="flex gap-2">
-              <span className="mt-0.5 text-[var(--primary)]">&#x2713;</span>
-              <div>
-                <span className="font-medium text-[var(--foreground)]">
-                  {title}
-                </span>
-                <span className="text-[var(--muted-foreground)]">
-                  {" — "}
-                  {desc}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+        <BentoGrid />
+      </section>
 
       {/* CTA */}
       <div className="flex flex-col items-center gap-4 pb-8">

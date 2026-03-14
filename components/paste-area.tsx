@@ -23,7 +23,7 @@ export function PasteArea({ value, onChange, onSubmit }: PasteAreaProps) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Markdownをここにペースト..."
+        placeholder="ChatGPTやClaudeの出力をここにペースト..."
         className="min-h-[200px] w-full resize-y rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 pb-8 font-mono text-sm text-[var(--card-foreground)] placeholder:text-[var(--muted-foreground)] focus:border-[var(--primary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)]/20 transition-colors"
       />
       <div className="pointer-events-none absolute bottom-2 right-3 flex items-center gap-3 text-[10px] text-[var(--muted-foreground)]">

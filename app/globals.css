@@ -4,6 +4,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  --font-body: "LINE Seed JP", system-ui, sans-serif;
   --background: oklch(0.98 0.005 250);
   --foreground: oklch(0.15 0.02 250);
   --card: oklch(1 0 0);
@@ -40,7 +41,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "LINE Seed JP", system-ui, sans-serif;
+  font-family: var(--font-body);
   letter-spacing: 0.02em;
 }
 
@@ -111,7 +112,7 @@ body {
 /* Prose: article-optimized typography */
 .prose {
   --tw-prose-body: var(--foreground);
-  font-family: "LINE Seed JP", system-ui, sans-serif;
+  font-family: var(--font-body);
   font-size: 1rem;
   line-height: 1.85;
   letter-spacing: 0.02em;

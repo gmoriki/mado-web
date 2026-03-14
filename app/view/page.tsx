@@ -10,6 +10,7 @@ import { ShareButton } from "@/components/share-button";
 import { ModeToggle, type ViewMode } from "@/components/mode-toggle";
 import { EditorPane } from "@/components/editor-pane";
 import { SplitView } from "@/components/split-view";
+import { FONTS, type FontId, getStoredFont, setStoredFont } from "@/lib/font";
 import Link from "next/link";
 
 const STORAGE_KEY = "mado-markdown";
@@ -22,8 +23,22 @@ export default function ViewPage() {
   const [error, setError] = useState<string | null>(null);
   const [isShared, setIsShared] = useState(false);
   const [contentKey, setContentKey] = useState(0);
+  const [activeFont, setActiveFont] = useState<FontId>("line-seed-jp");
   const router = useRouter();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    setActiveFont(getStoredFont());
+  }, []);
+
+  const handleFontChange = (fontId: FontId) => {
+    setActiveFont(fontId);
+    setStoredFont(fontId);
+    document.documentElement.style.setProperty(
+      "--font-body",
+      FONTS[fontId].family
+    );
+  };
 
   // Initial load
   useEffect(() => {
@@ -133,6 +148,17 @@ export default function ViewPage() {
             &larr; 新しいMarkdownを開く
           </Link>
           <div className="flex items-center gap-3">
+            <select
+              value={activeFont}
+              onChange={(e) => handleFontChange(e.target.value as FontId)}
+              className="rounded-lg border border-[var(--border)] bg-[var(--card)] px-2 py-1.5 text-xs text-[var(--card-foreground)] transition-colors hover:bg-[var(--muted)]"
+            >
+              {(Object.keys(FONTS) as FontId[]).map((id) => (
+                <option key={id} value={id}>
+                  {FONTS[id].label}
+                </option>
+              ))}
+            </select>
             <ModeToggle mode={mode} onChange={setMode} />
             {markdown && <ShareButton markdown={markdown} />}
           </div>

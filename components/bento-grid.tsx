@@ -1,0 +1,217 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { motion } from "motion/react";
+import { cn } from "@/lib/utils";
+import { FontSelector } from "@/components/font-selector";
+
+function BentoCard({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <motion.div
+      className={cn(
+        "group relative overflow-hidden rounded-2xl border border-[var(--border)]",
+        "bg-[var(--card)]/60 p-5 backdrop-blur-sm",
+        "transition-all hover:border-[var(--primary)]/40",
+        "hover:shadow-lg hover:shadow-[var(--primary)]/5",
+        className
+      )}
+      whileHover={{ y: -2, transition: { duration: 0.2 } }}
+    >
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent dark:from-white/5" />
+      <div className="relative">{children}</div>
+    </motion.div>
+  );
+}
+
+function CardLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">
+      {children}
+    </span>
+  );
+}
+
+function MermaidCard() {
+  return (
+    <BentoCard className="sm:col-span-2">
+      <CardLabel>Mermaid対応</CardLabel>
+      <div className="mt-3 rounded-xl bg-[var(--muted)] p-4">
+        <svg viewBox="0 0 320 70" className="w-full h-auto">
+          {/* Node: 入力 */}
+          <rect x="10" y="20" width="80" height="32" rx="8" fill="var(--card)" stroke="var(--border)" strokeWidth="1.5" />
+          <text x="50" y="41" textAnchor="middle" fontSize="12" fill="var(--foreground)">入力</text>
+
+          {/* Arrow 1 */}
+          <line x1="90" y1="36" x2="120" y2="36" stroke="var(--muted-foreground)" strokeWidth="1.5" />
+          <polygon points="120,32 128,36 120,40" fill="var(--muted-foreground)" />
+
+          {/* Node: 変換 */}
+          <rect x="128" y="20" width="80" height="32" rx="8" fill="var(--card)" stroke="var(--border)" strokeWidth="1.5" />
+          <text x="168" y="41" textAnchor="middle" fontSize="12" fill="var(--foreground)">変換</text>
+
+          {/* Arrow 2 */}
+          <line x1="208" y1="36" x2="238" y2="36" stroke="var(--muted-foreground)" strokeWidth="1.5" />
+          <polygon points="238,32 246,36 238,40" fill="var(--muted-foreground)" />
+
+          {/* Node: 表示 */}
+          <rect x="246" y="20" width="64" height="32" rx="8" fill="var(--accent)" stroke="var(--primary)" strokeWidth="1.5" opacity="0.8" />
+          <text x="278" y="41" textAnchor="middle" fontSize="12" fill="var(--foreground)">表示</text>
+        </svg>
+      </div>
+      <p className="mt-3 text-sm text-[var(--muted-foreground)]">
+        フローチャート・シーケンス図・ER図をSVGレンダリング
+      </p>
+    </BentoCard>
+  );
+}
+
+function ThemeCard() {
+  const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+    setDark(document.documentElement.classList.contains("dark"));
+  }, []);
+
+  const toggle = () => {
+    const next = !dark;
+    setDark(next);
+    document.documentElement.classList.toggle("dark", next);
+    localStorage.setItem("theme", next ? "dark" : "light");
+  };
+
+  return (
+    <BentoCard>
+      <CardLabel>テーマ</CardLabel>
+      <div className="mt-3 flex flex-col items-center gap-3">
+        <div className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-3">
+          <div className="h-2 w-16 rounded bg-[var(--foreground)]" />
+          <div className="mt-2 h-1.5 w-full rounded bg-[var(--muted)]" />
+          <div className="mt-1 h-1.5 w-3/4 rounded bg-[var(--muted)]" />
+        </div>
+        <button
+          onClick={toggle}
+          className="flex items-center gap-2 rounded-lg border border-[var(--border)] px-3 py-1.5 text-xs font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--muted)]"
+        >
+          {dark ? (
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2" /><path d="M12 20v2" />
+              <path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" />
+              <path d="M2 12h2" /><path d="M20 12h2" />
+              <path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
+            </svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            </svg>
+          )}
+          {dark ? "ライト" : "ダーク"}に切替
+        </button>
+      </div>
+    </BentoCard>
+  );
+}
+
+function FontCard() {
+  return (
+    <BentoCard>
+      <CardLabel>フォント</CardLabel>
+      <div className="mt-3">
+        <FontSelector />
+      </div>
+    </BentoCard>
+  );
+}
+
+function TableCard() {
+  return (
+    <BentoCard>
+      <CardLabel>GFMテーブル</CardLabel>
+      <div className="mt-3 overflow-hidden rounded-lg border border-[var(--border)]">
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="bg-[var(--muted)]">
+              <th className="px-3 py-1.5 text-left font-medium">機能</th>
+              <th className="px-3 py-1.5 text-left font-medium">対応</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-t border-[var(--border)]">
+              <td className="px-3 py-1.5">チェックリスト</td>
+              <td className="px-3 py-1.5 text-[var(--primary)]">&#x2713;</td>
+            </tr>
+            <tr className="border-t border-[var(--border)]">
+              <td className="px-3 py-1.5">取り消し線</td>
+              <td className="px-3 py-1.5 text-[var(--primary)]">&#x2713;</td>
+            </tr>
+            <tr className="border-t border-[var(--border)]">
+              <td className="px-3 py-1.5">脚注</td>
+              <td className="px-3 py-1.5 text-[var(--primary)]">&#x2713;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </BentoCard>
+  );
+}
+
+function CodeCard() {
+  return (
+    <BentoCard>
+      <CardLabel>コードブロック</CardLabel>
+      <div className="mt-3 rounded-lg bg-[var(--muted)] p-3 font-mono text-xs leading-relaxed">
+        <div>
+          <span className="text-purple-500 dark:text-purple-400">const</span>{" "}
+          <span className="text-[var(--foreground)]">greeting</span>{" "}
+          <span className="text-[var(--muted-foreground)]">=</span>{" "}
+          <span className="text-green-600 dark:text-green-400">&quot;Hello&quot;</span>;
+        </div>
+        <div>
+          <span className="text-blue-500 dark:text-blue-400">console</span>
+          <span className="text-[var(--muted-foreground)]">.</span>
+          <span className="text-yellow-600 dark:text-yellow-400">log</span>
+          <span className="text-[var(--foreground)]">(greeting);</span>
+        </div>
+      </div>
+    </BentoCard>
+  );
+}
+
+function PrivacyCard() {
+  return (
+    <BentoCard className="sm:col-span-2 lg:col-span-3">
+      <div className="flex items-center gap-4">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--primary)]">
+            <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+          </svg>
+        </div>
+        <div>
+          <h3 className="font-semibold text-[var(--foreground)]">完全クライアント処理</h3>
+          <p className="text-sm text-[var(--muted-foreground)]">
+            あなたのデータはブラウザ内で完結。サーバーには一切送信されません。
+          </p>
+        </div>
+      </div>
+    </BentoCard>
+  );
+}
+
+export function BentoGrid() {
+  return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <MermaidCard />
+      <ThemeCard />
+      <FontCard />
+      <TableCard />
+      <CodeCard />
+      <PrivacyCard />
+    </div>
+  );
+}
