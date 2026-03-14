@@ -38,7 +38,7 @@ export function ShareButton({ markdown, historyId }: ShareButtonProps) {
   };
 
   return (
-    <div className="flex flex-col items-start gap-2">
+    <div className="relative">
       <button
         onClick={handleShare}
         className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--card)] px-4 py-2 text-sm font-medium text-[var(--card-foreground)] transition-colors hover:bg-[var(--muted)]"
@@ -57,7 +57,9 @@ export function ShareButton({ markdown, historyId }: ShareButtonProps) {
         {copied ? "コピーしました!" : "共有URLをコピー"}
       </button>
       {warning && (
-        <p className="text-xs text-amber-600 dark:text-amber-400">{warning}</p>
+        <p className="absolute top-full right-0 mt-1 w-max max-w-xs rounded-lg bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-3 py-1.5 text-xs text-amber-600 dark:text-amber-400 shadow-sm">
+          {warning}
+        </p>
       )}
     </div>
   );
