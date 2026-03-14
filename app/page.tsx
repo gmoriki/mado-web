@@ -46,7 +46,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-8">
       {/* Hero */}
       <div className="text-center">
         <BlurReveal
@@ -54,11 +54,27 @@ export default function HomePage() {
           className="text-3xl font-bold tracking-tight sm:text-4xl"
           delay={0.1}
         >
-          mado web
+          AIの回答を、きれいに読む。
         </BlurReveal>
         <p className="mt-3 text-[var(--muted-foreground)]">
-          Markdownを、誰でも美しく読める形に。
+          ChatGPTやClaudeの出力をペーストするだけ。表もコードも図も、読みやすく整えます。
         </p>
+      </div>
+
+      {/* Use case hints */}
+      <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-[var(--muted-foreground)]">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-3 py-1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          じっくり読む
+        </span>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-3 py-1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg>
+          URLで共有する
+        </span>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-3 py-1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+          サーバーに送信しない
+        </span>
       </div>
 
       {/* Primary: Paste Area */}
@@ -76,7 +92,7 @@ export default function HomePage() {
             disabled={!markdown.trim()}
             className="disabled:opacity-40"
           >
-            表示する
+            読みやすく表示する
           </PopButton>
           <button
             onClick={handleSample}

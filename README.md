@@ -8,7 +8,7 @@
 
 ChatGPT や Claude の出力をペーストするだけで、表・リスト・Mermaid 図をきれいにレンダリング。データはブラウザ内で完結し、サーバーには一切送信されません。
 
-**[今すぐ使う → mado-web.pages.dev](https://mado-web.pages.dev)**
+**[今すぐ使う → mado-web.com](https://mado-web.com)**
 
 <!-- TODO: スクリーンショットを追加 -->
 <!-- ![mado web screenshot](docs/screenshot.png) -->
