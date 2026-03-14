@@ -47,17 +47,17 @@ export default function AboutPage() {
       </div>
 
       {/* 3 Glass Tiles */}
-      <div className="grid gap-6 sm:grid-cols-3">
+      <div className="grid gap-4 sm:gap-6 sm:grid-cols-3">
         {useCases.map((uc) => (
           <div
             key={uc.title}
-            className="group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)]/60 p-6 backdrop-blur-sm transition-all hover:border-[var(--primary)]/40 hover:shadow-lg hover:shadow-[var(--primary)]/5"
+            className="group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)]/60 p-4 sm:p-6 backdrop-blur-sm transition-all hover:border-[var(--primary)]/40 hover:shadow-lg hover:shadow-[var(--primary)]/5"
           >
             {/* Glass shine effect */}
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent dark:from-white/5" />
 
             <div className="relative">
-              <span className="text-3xl">{uc.emoji}</span>
+              <span className="text-2xl sm:text-3xl">{uc.emoji}</span>
               <h2 className="mt-4 text-lg font-bold leading-snug text-[var(--foreground)]">
                 {uc.title}
               </h2>

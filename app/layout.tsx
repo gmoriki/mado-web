@@ -63,16 +63,16 @@ export default function RootLayout({
               <img src="/logo.png" alt="mado web" width={28} height={28} />
               mado web
             </Link>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               <Link
                 href="/history"
-                className="rounded-md px-2 py-1.5 text-sm text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"
+                className="rounded-md px-1.5 py-1 sm:px-2 sm:py-1.5 text-sm text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"
               >
                 履歴
               </Link>
               <Link
                 href="/about"
-                className="rounded-md px-2 py-1.5 text-sm text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"
+                className="rounded-md px-1.5 py-1 sm:px-2 sm:py-1.5 text-sm text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"
               >
                 使い方
               </Link>

@@ -24,7 +24,7 @@ export function PasteArea({ value, onChange, onSubmit }: PasteAreaProps) {
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="AIの回答をここにペースト..."
-        className="min-h-[200px] w-full resize-y rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 pb-8 font-mono text-sm text-[var(--card-foreground)] placeholder:text-[var(--muted-foreground)] focus:border-[var(--primary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)]/20 transition-colors"
+        className="min-h-[150px] sm:min-h-[200px] w-full resize-y rounded-xl border border-[var(--border)] bg-[var(--card)] p-3 sm:p-4 pb-8 font-mono text-sm text-[var(--card-foreground)] placeholder:text-[var(--muted-foreground)] focus:border-[var(--primary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)]/20 transition-colors"
       />
       <div className="pointer-events-none absolute bottom-2 right-3 flex items-center gap-3 text-[10px] text-[var(--muted-foreground)]">
         {chars > 0 && (
@@ -34,7 +34,7 @@ export function PasteArea({ value, onChange, onSubmit }: PasteAreaProps) {
           </>
         )}
         {onSubmit && (
-          <span className="opacity-60">
+          <span className="hidden sm:inline opacity-60">
             {/Mac|iPhone|iPad/.test(navigator.userAgent) ? "⌘" : "Ctrl"}+Enter で表示
           </span>
         )}

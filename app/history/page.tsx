@@ -33,7 +33,7 @@ export default function HistoryPage() {
   return (
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-xl font-bold text-[var(--foreground)]">
+        <h1 className="text-lg sm:text-xl font-bold text-[var(--foreground)]">
           閲覧履歴
         </h1>
         {items.length > 0 &&

@@ -162,8 +162,9 @@ export function UnifiedDropZone({
               <polyline points="17 8 12 3 7 8" />
               <line x1="12" x2="12" y1="3" y2="15" />
             </svg>
-            <span className="text-sm text-[var(--muted-foreground)]">
-              ファイル・フォルダ・ZIPをドロップ
+            <span className="text-xs sm:text-sm text-[var(--muted-foreground)]">
+              <span className="sm:hidden">ファイルをドロップ</span>
+              <span className="hidden sm:inline">ファイル・フォルダ・ZIPをドロップ</span>
             </span>
             <div className="ml-auto flex gap-1.5">
               <button
