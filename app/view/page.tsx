@@ -58,8 +58,13 @@ export default function ViewPage() {
         setToolbarMode("bottom");
       }
 
+      // ページ最下部ではツールバーを隠す（フッターを邪魔しない）
+      const nearBottom = (window.innerHeight + y) >= (document.body.scrollHeight - 80);
+
       if (modeRef.current === "top") {
         setToolbarVisible(!(down && y > 80));
+      } else if (nearBottom) {
+        setToolbarVisible(false);
       } else {
         setToolbarVisible(!down);
         idleTimer.current = setTimeout(() => setToolbarVisible(true), 1200);

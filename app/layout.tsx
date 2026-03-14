@@ -81,7 +81,7 @@ export default function RootLayout({
           </div>
         </header>
         <main className="mx-auto max-w-4xl px-4 sm:px-6 py-8">{children}</main>
-        <footer className="border-t border-[var(--border)] mt-16 pb-20">
+        <footer className="border-t border-[var(--border)] mt-16">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 py-6 flex flex-col items-center gap-3 text-xs text-[var(--muted-foreground)]">
             <div className="flex items-center gap-4">
               <Link href="/terms" className="transition-colors hover:text-[var(--foreground)]">利用規約</Link>
