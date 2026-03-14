@@ -82,13 +82,13 @@ export default function RootLayout({
         </header>
         <main className="mx-auto max-w-4xl px-4 sm:px-6 py-8">{children}</main>
         <footer className="border-t border-[var(--border)] mt-16 pb-14">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 py-6 flex flex-wrap items-center justify-between gap-3 text-xs text-[var(--muted-foreground)]">
-            <span>&copy; 2026 gmoriki</span>
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 py-6 flex flex-col items-center gap-3 text-xs text-[var(--muted-foreground)]">
             <div className="flex items-center gap-4">
               <Link href="/terms" className="transition-colors hover:text-[var(--foreground)]">利用規約</Link>
               <Link href="/privacy" className="transition-colors hover:text-[var(--foreground)]">プライバシーポリシー</Link>
               <a href="https://github.com/gmoriki/mado-web" className="transition-colors hover:text-[var(--foreground)]">GitHub</a>
             </div>
+            <span>&copy; 2026 gmoriki</span>
           </div>
         </footer>
       </body>
