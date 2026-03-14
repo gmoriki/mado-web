@@ -21,13 +21,13 @@ export function ModeToggle({ mode, onChange }: ModeToggleProps) {
 
   const modes: { value: ViewMode; label: string }[] = isMobile
     ? [
-        { value: "view", label: "View" },
-        { value: "edit", label: "Edit" },
+        { value: "view", label: "読む" },
+        { value: "edit", label: "書く" },
       ]
     : [
-        { value: "view", label: "View" },
-        { value: "edit", label: "Edit" },
-        { value: "split", label: "Split" },
+        { value: "view", label: "読む" },
+        { value: "edit", label: "書く" },
+        { value: "split", label: "比べる" },
       ];
 
   return (

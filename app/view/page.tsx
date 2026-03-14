@@ -205,7 +205,7 @@ export default function ViewPage() {
           )}
         </div>
       ) : (
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
           <Link
             href="/"
             className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
@@ -213,17 +213,20 @@ export default function ViewPage() {
             &larr; 新しいMarkdownを開く
           </Link>
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            <select
-              value={activeFont}
-              onChange={(e) => handleFontChange(e.target.value as FontId)}
-              className="rounded-lg border border-[var(--border)] bg-[var(--card)] px-2 py-1.5 text-xs text-[var(--card-foreground)] transition-colors hover:bg-[var(--muted)]"
-            >
+            <label className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--card)] px-2 py-1.5 text-xs transition-colors hover:bg-[var(--muted)] cursor-pointer">
+              <span className="text-[var(--muted-foreground)]">Aa</span>
+              <select
+                value={activeFont}
+                onChange={(e) => handleFontChange(e.target.value as FontId)}
+                className="bg-transparent text-[var(--card-foreground)] outline-none cursor-pointer"
+              >
               {(Object.keys(FONTS) as FontId[]).map((id) => (
                 <option key={id} value={id}>
                   {FONTS[id].label}
                 </option>
               ))}
-            </select>
+              </select>
+            </label>
             <ModeToggle mode={mode} onChange={setMode} />
             {markdown && <ShareButton markdown={markdown} historyId={historyId} />}
           </div>
