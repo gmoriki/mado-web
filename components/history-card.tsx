@@ -48,13 +48,9 @@ export function HistoryCard({ item, onRemove }: HistoryCardProps) {
     <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 transition-colors hover:bg-[var(--muted)]">
       <div className="flex items-start gap-3">
         <div className="min-w-0 flex-1">
-          {item.shared && item.url ? (
-            <a href={item.url} className="block hover:text-[var(--foreground)] transition-colors cursor-pointer">
-              {preview}
-            </a>
-          ) : (
-            preview
-          )}
+          <a href={item.url} className="block hover:text-[var(--foreground)] transition-colors cursor-pointer">
+            {preview}
+          </a>
         </div>
         {item.shared ? (
           <span className="shrink-0 inline-flex items-center gap-1 rounded-full bg-[var(--primary)]/10 px-2 py-0.5 text-[10px] font-medium text-[var(--primary)]">
@@ -76,7 +72,7 @@ export function HistoryCard({ item, onRemove }: HistoryCardProps) {
           {formatRelativeTime(item.createdAt)}
         </span>
         <div className="flex items-center gap-2">
-          {item.shared && item.url && (
+          {item.shared && (
             <button
               onClick={handleCopy}
               className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"

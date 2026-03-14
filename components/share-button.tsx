@@ -28,7 +28,7 @@ export function ShareButton({ markdown, historyId }: ShareButtonProps) {
 
       await navigator.clipboard.writeText(url);
       if (historyId) {
-        markAsShared(historyId, url);
+        markAsShared(historyId);
       }
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
