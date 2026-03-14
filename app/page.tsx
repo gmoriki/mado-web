@@ -56,7 +56,7 @@ export default function HomePage() {
         >
           AIの回答を、きれいに読む。
         </BlurReveal>
-        <p className="mt-3 text-[var(--muted-foreground)]">
+        <p className="mt-3 text-sm sm:text-base text-[var(--muted-foreground)] px-2">
           ChatGPTやClaudeの出力をペーストするだけ。表もコードも図も、読みやすく整えます。
         </p>
       </div>

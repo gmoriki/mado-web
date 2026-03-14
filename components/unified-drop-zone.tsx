@@ -131,7 +131,7 @@ export function UnifiedDropZone({
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        className={`flex cursor-pointer ${compact ? "flex-row items-center gap-3 rounded-xl border-2 border-dashed p-4" : "flex-col items-center justify-center rounded-2xl border-2 border-dashed p-10"} transition-all ${
+        className={`flex cursor-pointer ${compact ? "flex-col sm:flex-row items-center gap-2 sm:gap-3 rounded-xl border-2 border-dashed p-3 sm:p-4" : "flex-col items-center justify-center rounded-2xl border-2 border-dashed p-10"} transition-all ${
           isDragging
             ? "border-[var(--primary)] bg-[var(--accent)] scale-[1.01]"
             : "border-[var(--border)] hover:border-[var(--muted-foreground)]"
@@ -166,7 +166,7 @@ export function UnifiedDropZone({
               <span className="sm:hidden">ファイルをドロップ</span>
               <span className="hidden sm:inline">ファイル・フォルダ・ZIPをドロップ</span>
             </span>
-            <div className="ml-auto flex gap-1.5">
+            <div className="flex gap-1.5 sm:ml-auto">
               <button
                 onClick={() => fileInputRef.current?.click()}
                 className="rounded-md border border-[var(--border)] bg-[var(--card)] px-3 py-1 text-xs font-medium text-[var(--card-foreground)] hover:bg-[var(--muted)] transition-colors"
