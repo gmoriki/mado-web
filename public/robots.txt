@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /view
+Disallow: /workspace
+
+Sitemap: https://mado-web.com/sitemap.xml

@@ -6,6 +6,7 @@ import { remarkCustomDirectives } from "./remark-custom-directives";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import rehypeSlug from "rehype-slug";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import { renderMermaid } from "beautiful-mermaid";
 
 const MERMAID_RE =
@@ -57,6 +58,20 @@ async function renderMermaidBlocks(html: string): Promise<string> {
   return result;
 }
 
+const sanitizeSchema = {
+  ...defaultSchema,
+  tagNames: [
+    ...(defaultSchema.tagNames || []),
+    "section", "summary", "details",
+  ],
+  attributes: {
+    ...defaultSchema.attributes,
+    "*": [...(defaultSchema.attributes?.["*"] || []), "className", "class", "style"],
+    div: [...(defaultSchema.attributes?.["div"] || []), "class"],
+    span: [...(defaultSchema.attributes?.["span"] || []), "class"],
+  },
+};
+
 export async function markdownToHtml(markdown: string): Promise<string> {
   const result = await unified()
     .use(remarkParse)
@@ -64,8 +79,9 @@ export async function markdownToHtml(markdown: string): Promise<string> {
     .use(remarkDirective)
     .use(remarkCustomDirectives)
     .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeSanitize, sanitizeSchema)
     .use(rehypeSlug)
-    .use(rehypeStringify, { allowDangerousHtml: true })
+    .use(rehypeStringify)
     .process(markdown);
 
   const html = String(result);

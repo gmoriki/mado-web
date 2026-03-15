@@ -1,10 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "利用規約",
+  description: "mado web の利用規約。サービス概要、禁止事項、共有機能、免責事項。",
+};
 
 export default function TermsPage() {
   return (
     <article className="prose prose-neutral dark:prose-invert mx-auto max-w-2xl prose-headings:scroll-mt-20">
       <h1>利用規約</h1>
-      <p className="text-sm text-[var(--muted-foreground)]">最終更新日: 2026年3月14日</p>
+      <p className="text-sm text-[var(--muted-foreground)]">最終更新日: 2026年3月15日</p>
 
       <p>
         この利用規約（以下「本規約」）は、mado web（以下「本サービス」）の利用条件を定めるものです。
@@ -33,6 +39,10 @@ export default function TermsPage() {
         長いドキュメントはブラウザ上でEnd-to-End暗号化（AES-256-GCM）した上でサーバーに保存し、復号鍵はURL内にのみ含まれます。
         サーバーでは内容を読むことができません。暗号化共有されたデータは90日後に自動的に削除されます。
         共有URLを知る人は誰でもその内容を閲覧できるため、共有する内容にはご注意ください。
+      </p>
+      <p>
+        短いドキュメントはURL自体にMarkdownの内容が含まれるため、URLを共有した際に内容が第三者に見える可能性があります。
+        機密性の高い情報は暗号化共有（長文モード）の使用を推奨します。
       </p>
 
       <h2>第4条（免責事項）</h2>

@@ -6,8 +6,28 @@ import "@fontsource/line-seed-jp/700.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "mado web",
-  description: "AIの回答をペーストするだけ。美しい文書として表示・共有できるブラウザツール",
+  title: {
+    default: "mado web — AIの回答を、そのまま共有リンクに",
+    template: "%s | mado web",
+  },
+  description: "Markdownをブラウザで美しく表示・共有。AIの回答をペーストするだけ。アカウント不要、データは端末内で完結。",
+  metadataBase: new URL("https://mado-web.com"),
+  openGraph: {
+    title: "mado web — AIの回答を、そのまま共有リンクに",
+    description: "Markdownをブラウザで美しく表示・共有。AIの回答をペーストするだけ。アカウント不要、データは端末内で完結。",
+    url: "https://mado-web.com",
+    siteName: "mado web",
+    locale: "ja_JP",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "mado web",
+    description: "AIの回答をペーストするだけ。美しい文書として表示・共有できるブラウザツール",
+  },
+  alternates: {
+    canonical: "https://mado-web.com",
+  },
   icons: {
     icon: [
       { url: "/favicon-192x192.png", sizes: "192x192", type: "image/png" },
@@ -27,6 +47,16 @@ export default function RootLayout({
   return (
     <html lang="ja" suppressHydrationWarning>
       <head>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "mado web",
+          "url": "https://mado-web.com",
+          "description": "Markdownをブラウザで美しく表示・共有できるWebアプリ",
+          "applicationCategory": "Productivity",
+          "operatingSystem": "Web",
+          "offers": { "@type": "Offer", "price": "0" },
+        }) }} />
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=BIZ+UDPGothic:wght@400;700&display=swap"

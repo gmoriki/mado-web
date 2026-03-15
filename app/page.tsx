@@ -66,7 +66,7 @@ export default function HomePage() {
           AIの回答を、そのまま共有リンクに。
         </BlurReveal>
         <p className="mt-3 text-sm sm:text-base text-[var(--muted-foreground)]">
-          表も図もそのまま。リンクで安全に共有。
+          Markdownを美しく表示。リンクひとつで安全に共有。
         </p>
         <p className="mt-1.5 text-xs text-[var(--muted-foreground)]">
           🔒 ブラウザ完結・外部送信なし
