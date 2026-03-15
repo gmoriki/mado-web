@@ -7,7 +7,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "mado web",
-  description: "ブラウザ完結でMarkdownを美しく閲覧・共有",
+  description: "AIの回答をペーストするだけ。美しい文書として表示・共有できるブラウザツール",
   icons: {
     icon: [
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
@@ -58,7 +58,7 @@ export default function RootLayout({
           <div className="mx-auto flex max-w-4xl items-center justify-between px-4 sm:px-6 py-3">
             <Link
               href="/"
-              className="flex items-center gap-2 text-lg font-bold tracking-tight text-[var(--foreground)] transition-opacity hover:opacity-70"
+              className="flex shrink-0 items-center gap-2 text-lg font-bold tracking-tight whitespace-nowrap text-[var(--foreground)] transition-opacity hover:opacity-70"
             >
               <img src="/logo.png" alt="mado web" width={28} height={28} />
               mado web
@@ -83,14 +83,14 @@ export default function RootLayout({
         <main className="mx-auto max-w-4xl px-4 sm:px-6 py-8 flex-1">{children}</main>
         <footer className="border-t border-[var(--border)]">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 py-5 flex flex-col items-center gap-2 text-xs text-[var(--muted-foreground)]">
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
               <Link href="/terms" className="transition-colors hover:text-[var(--foreground)]">利用規約</Link>
               <span className="text-[var(--border)]" aria-hidden="true">|</span>
               <Link href="/privacy" className="transition-colors hover:text-[var(--foreground)]">プライバシーポリシー</Link>
               <span className="text-[var(--border)]" aria-hidden="true">|</span>
               <a href="https://github.com/gmoriki/mado-web" className="transition-colors hover:text-[var(--foreground)]">GitHub</a>
             </div>
-            <span className="text-[10px] text-[var(--muted-foreground)]/60">&copy; 2026 gmoriki</span>
+            <span className="block text-center text-[10px] text-[var(--muted-foreground)]/60">&copy; 2026 gmoriki</span>
           </div>
         </footer>
       </body>

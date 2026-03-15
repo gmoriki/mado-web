@@ -10,21 +10,21 @@ const useCases = [
     emoji: "🤖",
     title: "AIの出力を美しく読む",
     description:
-      "ChatGPTやClaudeが生成したMarkdownをペーストするだけ。表・リスト・Mermaid図もきれいにレンダリング。非エンジニアでも美しいドキュメントに。",
+      "ChatGPTやClaudeの回答をペーストするだけ。表・リスト・図も崩れずきれいに表示されます。講義資料や報告書の下書きにも。",
     action: "コピペして閲覧",
   },
   {
     emoji: "📤",
     title: "URLひとつで共有する",
     description:
-      "アカウント不要。短いドキュメントはURLに直接埋め込み、長いドキュメントはEnd-to-End暗号化で安全に保存。どちらもリンクひとつで共有でき、サーバーが内容を読むことはできません。",
+      "アカウント登録は不要。リンクを送るだけで相手もすぐ閲覧できます。内容は暗号化され、サーバーが読み取ることはできません。委員会資料や研究概要の共有に。",
     action: "共有URLを生成",
   },
   {
     emoji: "📁",
     title: "ドキュメント集をまとめて読む",
     description:
-      "ZIPやフォルダをドロップすれば、ファイルツリー付きのワークスペースで閲覧。プロジェクトのドキュメントやObsidian Vaultをブラウザで快適に読める。",
+      "ZIPやフォルダをドロップすれば、一覧付きのワークスペースで閲覧できます。プロジェクト資料やマニュアル集をまとめて確認するのに便利です。",
     action: "フォルダをドロップ",
   },
 ];
@@ -42,7 +42,7 @@ export default function AboutPage() {
           mado web の使い方
         </BlurReveal>
         <p className="mt-3 text-[var(--muted-foreground)]">
-          Markdownの「閲覧」を、誰にとっても快適に。
+          Markdownの閲覧・共有を、誰にとってもかんたんに。
         </p>
       </div>
 
@@ -76,19 +76,16 @@ export default function AboutPage() {
 
       {/* Interactive Feature Grid */}
       <section>
-        <h2 className="mb-4 text-center text-lg font-bold text-[var(--foreground)]">
-          できること
-        </h2>
         <BentoGrid />
       </section>
 
       {/* CTA */}
       <div className="flex flex-col items-center gap-4 pb-8">
         <p className="text-lg font-bold text-[var(--foreground)]">
-          mado web がおすすめです。
+          まずは試してみてください。
         </p>
         <p className="text-sm text-[var(--muted-foreground)]">
-          インストール不要。ブラウザだけで、今すぐ。
+          アカウント登録もインストールも不要。ブラウザだけで今すぐ使えます。
         </p>
         <PopButton color="teal" size="lg" asChild>
           <Link href="/">試してみる</Link>

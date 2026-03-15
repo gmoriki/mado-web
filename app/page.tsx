@@ -57,19 +57,19 @@ export default function HomePage() {
   return (
     <div className="flex flex-col gap-6 min-h-[calc(100dvh-12rem)] justify-center">
       {/* Hero */}
-      <div className="text-center">
+      <div>
         <BlurReveal
           as="h1"
           className="text-3xl font-bold tracking-tight sm:text-4xl"
           delay={0.1}
         >
-          コピペだけ。AIの回答がきれいなページに。
+          AIの回答を、そのまま共有リンクに。
         </BlurReveal>
-        <p className="mt-3 text-sm sm:text-base text-[var(--muted-foreground)] px-2">
-          表もコードも図も読みやすく。リンク1つで共有。
+        <p className="mt-3 text-sm sm:text-base text-[var(--muted-foreground)]">
+          表も図もそのまま。リンクで安全に共有。
         </p>
-        <p className="mt-1.5 text-xs text-[var(--muted-foreground)]/70 px-2">
-          データは外部に送信しません
+        <p className="mt-1.5 text-xs text-[var(--muted-foreground)]">
+          🔒 ブラウザ完結・外部送信なし
         </p>
       </div>
 
@@ -91,7 +91,7 @@ export default function HomePage() {
           disabled={!markdown.trim()}
           className="w-full sm:w-auto disabled:opacity-50"
         >
-          ページにする
+          文書にする
         </PopButton>
         <button
           onClick={handleSample}

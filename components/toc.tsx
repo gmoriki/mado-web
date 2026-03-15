@@ -72,7 +72,7 @@ export function TableOfContents({ contentKey, bottomBarVisible = false }: { cont
   return (
     <>
       {/* Floating button */}
-      <div className={`fixed right-6 z-50 transition-all duration-300 ${bottomBarVisible ? "bottom-[60px]" : "bottom-6"}`}>
+      <div className={`fixed right-4 sm:right-6 z-50 transition-all duration-300 ${bottomBarVisible ? "bottom-[60px]" : "bottom-4 sm:bottom-6"}`}>
         <button
           onClick={() => setOpen(!open)}
           className={`flex h-11 w-11 items-center justify-center rounded-full shadow-lg active:scale-95 transition-all ${

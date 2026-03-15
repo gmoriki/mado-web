@@ -71,7 +71,7 @@ function MarkdownCard() {
 function MermaidCard() {
   return (
     <BentoCard>
-      <CardLabel>Mermaid対応</CardLabel>
+      <CardLabel>図の自動描画</CardLabel>
       <div className="mt-3 rounded-xl bg-[var(--muted)] p-4">
         <svg viewBox="0 0 320 70" className="w-full h-auto">
           {/* Node: 入力 */}
@@ -96,7 +96,7 @@ function MermaidCard() {
         </svg>
       </div>
       <p className="mt-3 text-sm text-[var(--muted-foreground)]">
-        フローチャート・シーケンス図・ER図をSVGレンダリング
+        フローチャートやシーケンス図を自動で描画（Mermaid記法）
       </p>
     </BentoCard>
   );
@@ -105,27 +105,31 @@ function MermaidCard() {
 function TableCard() {
   return (
     <BentoCard>
-      <CardLabel>GFMテーブル</CardLabel>
+      <CardLabel>テーブル表示</CardLabel>
       <div className="mt-3 overflow-hidden rounded-lg border border-[var(--border)]">
         <table className="w-full text-xs">
           <thead>
             <tr className="bg-[var(--muted)]">
-              <th className="px-3 py-1.5 text-left font-medium">機能</th>
-              <th className="px-3 py-1.5 text-left font-medium">対応</th>
+              <th className="px-3 py-1.5 text-left font-medium">日程</th>
+              <th className="px-3 py-1.5 text-left font-medium">内容</th>
+              <th className="px-3 py-1.5 text-left font-medium">担当</th>
             </tr>
           </thead>
           <tbody>
             <tr className="border-t border-[var(--border)]">
-              <td className="px-3 py-1.5">チェックリスト</td>
-              <td className="px-3 py-1.5 text-[var(--primary)]">&#x2713;</td>
+              <td className="px-3 py-1.5">4/10</td>
+              <td className="px-3 py-1.5">キックオフ</td>
+              <td className="px-3 py-1.5">田中</td>
             </tr>
             <tr className="border-t border-[var(--border)]">
-              <td className="px-3 py-1.5">取り消し線</td>
-              <td className="px-3 py-1.5 text-[var(--primary)]">&#x2713;</td>
+              <td className="px-3 py-1.5">4/17</td>
+              <td className="px-3 py-1.5">中間報告</td>
+              <td className="px-3 py-1.5">佐藤</td>
             </tr>
             <tr className="border-t border-[var(--border)]">
-              <td className="px-3 py-1.5">脚注</td>
-              <td className="px-3 py-1.5 text-[var(--primary)]">&#x2713;</td>
+              <td className="px-3 py-1.5">4/24</td>
+              <td className="px-3 py-1.5">最終発表</td>
+              <td className="px-3 py-1.5">鈴木</td>
             </tr>
           </tbody>
         </table>
@@ -166,7 +170,7 @@ function PrivacyCard() {
           </svg>
         </div>
         <div>
-          <h3 className="font-semibold text-[var(--foreground)]">完全クライアント処理</h3>
+          <h3 className="font-semibold text-[var(--foreground)]">データはあなたの端末だけで処理</h3>
           <p className="text-sm text-[var(--muted-foreground)]">
             あなたのデータはブラウザ内で完結。サーバーには一切送信されません。
           </p>
