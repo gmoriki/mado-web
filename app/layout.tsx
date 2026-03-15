@@ -80,7 +80,7 @@ export default function RootLayout({
             </div>
           </div>
         </header>
-        <main className="mx-auto max-w-4xl px-4 sm:px-6 py-8 flex-1">{children}</main>
+        <main className="mx-auto max-w-4xl px-4 sm:px-6 py-8 flex-1 min-w-0">{children}</main>
         <footer className="border-t border-[var(--border)]">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 py-5 flex flex-col items-center gap-2 text-xs text-[var(--muted-foreground)]">
             <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
