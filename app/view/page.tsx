@@ -297,7 +297,7 @@ export default function ViewPage() {
             !toolbarVisible ? "translate-y-full" : ""
           }`}
         >
-          <div className="mx-auto flex max-w-4xl flex-wrap items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5">
+          <div className="mx-auto flex flex-wrap items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2.5" style={{ maxWidth: 'min(42rem, 100%)' }}>
             {renderControls()}
           </div>
         </div>
