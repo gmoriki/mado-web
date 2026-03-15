@@ -38,6 +38,10 @@
   --tab-inactive: oklch(0.52 0.01 80);
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -266,11 +270,23 @@ body {
   display: block;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  white-space: nowrap;
 }
 .prose :where(thead, tbody) {
   display: table;
   width: 100%;
+}
+
+/* Prose: prevent overflow on mobile */
+.prose {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+.prose :where(pre) {
+  max-width: 100%;
+}
+.prose :where(img, video, iframe) {
+  max-width: 100%;
+  height: auto;
 }
 .prose :where(hr) {
   border-color: var(--border);

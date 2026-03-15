@@ -47,27 +47,38 @@ export default function ViewPage() {
     const onScroll = () => {
       const y = window.scrollY;
       const down = y > lastScrollY.current;
+      const delta = Math.abs(y - lastScrollY.current);
       if (idleTimer.current) clearTimeout(idleTimer.current);
+
+      // 微小スクロールは無視（モバイルのバウンス等）
+      if (delta < 5) {
+        lastScrollY.current = y;
+        return;
+      }
 
       if (y < 50) {
         modeRef.current = "top";
         setToolbarMode("top");
         setToolbarVisible(true);
-      } else if (y > 200 && modeRef.current === "top") {
+      } else if (modeRef.current === "top") {
         modeRef.current = "bottom";
         setToolbarMode("bottom");
+        setToolbarVisible(false);
       }
 
       // ページ最下部ではツールバーを隠す（フッターを邪魔しない）
       const nearBottom = (window.innerHeight + y) >= (document.body.scrollHeight - 80);
 
-      if (modeRef.current === "top") {
-        setToolbarVisible(!(down && y > 80));
-      } else if (nearBottom) {
-        setToolbarVisible(false);
-      } else {
-        setToolbarVisible(!down);
-        idleTimer.current = setTimeout(() => setToolbarVisible(true), 1200);
+      if (modeRef.current === "bottom") {
+        if (nearBottom) {
+          setToolbarVisible(false);
+        } else if (!down) {
+          // 上スクロールで表示
+          setToolbarVisible(true);
+        } else {
+          // 下スクロールで隠す
+          setToolbarVisible(false);
+        }
       }
 
       lastScrollY.current = y;
