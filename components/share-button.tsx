@@ -72,7 +72,7 @@ export function ShareButton({ markdown, historyId }: ShareButtonProps) {
       <button
         onClick={handleShare}
         disabled={sharing}
-        className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--card)] px-4 py-2 text-sm font-medium text-[var(--card-foreground)] transition-colors hover:bg-[var(--muted)] disabled:opacity-50"
+        className="inline-flex items-center gap-1.5 sm:gap-2 rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 sm:px-4 py-2 text-sm font-medium text-[var(--card-foreground)] transition-colors hover:bg-[var(--muted)] disabled:opacity-50"
       >
         {sharing ? (
           <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
@@ -90,12 +90,12 @@ export function ShareButton({ markdown, historyId }: ShareButtonProps) {
         {sharing ? "生成中..." : copied ? "コピー!" : "共有"}
       </button>
       {copied && encrypted && (
-        <p className="absolute top-full right-0 mt-1 w-max max-w-xs rounded-lg bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-3 py-1.5 text-xs text-emerald-600 dark:text-emerald-400 shadow-sm">
+        <p className="absolute top-full right-0 mt-1 max-w-[calc(100vw-2rem)] whitespace-nowrap rounded-lg bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-3 py-1.5 text-xs text-emerald-600 dark:text-emerald-400 shadow-sm">
           🔒 暗号化済み・90日間有効
         </p>
       )}
       {warning && (
-        <p className="absolute top-full right-0 mt-1 w-max max-w-xs rounded-lg bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-3 py-1.5 text-xs text-amber-600 dark:text-amber-400 shadow-sm">
+        <p className="absolute top-full right-0 mt-1 max-w-[calc(100vw-2rem)] rounded-lg bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-3 py-1.5 text-xs text-amber-600 dark:text-amber-400 shadow-sm">
           {warning}
         </p>
       )}

@@ -233,7 +233,7 @@ export default function ViewPage() {
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
             </div>
-            <div className="invisible group-hover:visible absolute right-0 top-full mt-1 z-50 w-72 rounded-xl border border-[var(--border)] bg-[var(--card)] p-3 shadow-lg">
+            <div className="invisible group-hover:visible absolute right-0 top-full mt-1 z-50 w-64 sm:w-72 rounded-xl border border-[var(--border)] bg-[var(--card)] p-3 shadow-lg">
               <p className="text-xs font-medium text-[var(--foreground)] mb-1">End-to-End 暗号化</p>
               <p className="text-xs text-[var(--muted-foreground)]">
                 内容はブラウザで暗号化されてからサーバーに保存されました。「鍵」はこのURLだけに含まれており、サーバーには渡りません。このURLを知っている人だけが読めます。
@@ -244,12 +244,12 @@ export default function ViewPage() {
       </>
     ) : (
       <>
-        <label className="inline-flex items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--card)] px-1.5 py-1 text-[11px] sm:text-xs transition-colors hover:bg-[var(--muted)] cursor-pointer">
-          <span className="text-[var(--muted-foreground)]">Aa</span>
+        <label className="inline-flex items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--card)] px-1 py-1 text-[11px] sm:text-xs transition-colors hover:bg-[var(--muted)] cursor-pointer">
+          <span className="text-[var(--muted-foreground)] hidden sm:inline">Aa</span>
           <select
             value={activeFont}
             onChange={(e) => handleFontChange(e.target.value as FontId)}
-            className="bg-transparent text-[var(--card-foreground)] outline-none cursor-pointer"
+            className="bg-transparent text-[var(--card-foreground)] outline-none cursor-pointer max-w-[5.5rem] sm:max-w-none"
           >
             {(Object.keys(FONTS) as FontId[]).map((id) => (
               <option key={id} value={id}>
@@ -269,7 +269,7 @@ export default function ViewPage() {
     <div>
       {/* 上部ツールバー — 初期位置 */}
       <div
-        className={`sticky top-[53px] z-40 -mt-2 mb-8 flex flex-wrap items-center gap-2 pb-3 border-b border-[var(--border)] transition-all duration-300 ${
+        className={`sticky top-[53px] z-40 -mt-2 mb-8 flex flex-wrap items-center gap-1.5 sm:gap-2 pb-3 border-b border-[var(--border)] transition-all duration-300 ${
           toolbarMode === "bottom" || !toolbarVisible
             ? "opacity-0 pointer-events-none"
             : ""
@@ -285,7 +285,7 @@ export default function ViewPage() {
             !toolbarVisible ? "translate-y-full" : ""
           }`}
         >
-          <div className="mx-auto flex max-w-4xl flex-wrap items-center gap-2 px-4 sm:px-6 py-2.5">
+          <div className="mx-auto flex max-w-4xl flex-wrap items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5">
             {renderControls()}
           </div>
         </div>

@@ -169,6 +169,8 @@ body {
   padding: 1.25em;
   font-size: 0.875rem;
   line-height: 1.65;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .prose :where(strong) {
   font-weight: 700;
