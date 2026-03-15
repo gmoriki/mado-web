@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   description: "AIの回答をペーストするだけ。美しい文書として表示・共有できるブラウザツール",
   icons: {
     icon: [
+      { url: "/favicon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/favicon-48x48.png", sizes: "48x48", type: "image/png" },
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
     ],
@@ -60,7 +62,7 @@ export default function RootLayout({
               href="/"
               className="flex shrink-0 items-center gap-2 text-lg font-bold tracking-tight whitespace-nowrap text-[var(--foreground)] transition-opacity hover:opacity-70"
             >
-              <img src="/logo.png" alt="mado web" width={28} height={28} />
+              <img src="/logo.png" alt="mado web" width={32} height={32} />
               mado web
             </Link>
             <div className="flex items-center gap-1 sm:gap-2">
