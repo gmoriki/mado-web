@@ -38,10 +38,6 @@
   --tab-inactive: oklch(0.52 0.01 80);
 }
 
-html {
-  overflow-x: hidden;
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
@@ -165,6 +161,7 @@ body {
   padding: 0.15em 0.35em;
   border-radius: 0.25rem;
   background: var(--muted);
+  word-break: break-all;
 }
 .prose :where(pre) {
   margin-top: 1.5em;

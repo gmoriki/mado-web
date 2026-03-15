@@ -90,12 +90,12 @@ export function ShareButton({ markdown, historyId }: ShareButtonProps) {
         {sharing ? "生成中..." : copied ? "コピー!" : "共有"}
       </button>
       {copied && encrypted && (
-        <p className="absolute top-full right-0 mt-1 max-w-[calc(100vw-2rem)] whitespace-nowrap rounded-lg bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-3 py-1.5 text-xs text-emerald-600 dark:text-emerald-400 shadow-sm">
+        <p className="absolute top-full right-0 mt-1 whitespace-nowrap rounded-lg bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-3 py-1.5 text-xs text-emerald-600 dark:text-emerald-400 shadow-sm">
           🔒 暗号化済み・90日間有効
         </p>
       )}
       {warning && (
-        <p className="absolute top-full right-0 mt-1 max-w-[calc(100vw-2rem)] rounded-lg bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-3 py-1.5 text-xs text-amber-600 dark:text-amber-400 shadow-sm">
+        <p className="absolute top-full right-0 mt-1 w-max rounded-lg bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-3 py-1.5 text-xs text-amber-600 dark:text-amber-400 shadow-sm">
           {warning}
         </p>
       )}
