@@ -277,7 +277,7 @@ export default function ViewPage() {
     );
 
   return (
-    <div className="min-w-0">
+    <div className="min-w-0 overflow-x-hidden">
       {/* 上部ツールバー — 初期位置 */}
       <div
         className={`sticky top-[53px] z-40 -mt-2 mb-8 flex flex-wrap items-center gap-1.5 sm:gap-2 pb-3 border-b border-[var(--border)] transition-all duration-300 ${
