@@ -277,10 +277,10 @@ export default function ViewPage() {
     );
 
   return (
-    <div className="min-w-0 overflow-x-hidden">
+    <div className="min-w-0 overflow-x-hidden -mt-4">
       {/* 上部ツールバー — 初期位置 */}
       <div
-        className={`sticky top-[53px] z-40 mb-6 flex flex-wrap items-center gap-1.5 sm:gap-2 pb-3 border-b border-[var(--border)] bg-[var(--background)] transition-all duration-300 ${
+        className={`sticky top-[53px] z-40 mb-4 flex flex-wrap items-center gap-1.5 sm:gap-2 py-2 border-b border-[var(--border)] bg-[var(--background)] transition-all duration-300 ${
           toolbarMode === "bottom" || !toolbarVisible
             ? "opacity-0 pointer-events-none"
             : ""
