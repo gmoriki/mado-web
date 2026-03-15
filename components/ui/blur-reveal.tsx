@@ -95,7 +95,11 @@ export function BlurReveal({
                   >
                     {char}
                   </motion.span>
-                ))}
+                )).reduce<React.ReactNode[]>((acc, span, i) => {
+                  if (i > 0) acc.push("\u200B")
+                  acc.push(span)
+                  return acc
+                }, [])}
                 {wordIndex < wordsArray.length - 1 && (
                   <motion.span
                     key={`space-${wordIndex}`}

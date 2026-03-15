@@ -280,8 +280,7 @@ body {
 
 /* Prose: prevent overflow on mobile */
 .prose {
-  overflow-wrap: break-word;
-  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 .prose :where(pre) {
   max-width: 100%;
