@@ -280,11 +280,12 @@ export default function ViewPage() {
     <div className="min-w-0 overflow-x-hidden">
       {/* 上部ツールバー — 初期位置（スクロールで下部バーに切り替わる） */}
       <div
-        className={`mb-4 flex flex-wrap items-center gap-1.5 sm:gap-2 py-2 border-b border-[var(--border)] transition-all duration-300 ${
+        className={`mx-auto mb-8 flex flex-wrap items-center gap-1.5 sm:gap-2 py-2 border-b border-[var(--border)] px-2 sm:px-4 transition-all duration-300 ${
           toolbarMode === "bottom" || !toolbarVisible
             ? "opacity-0 pointer-events-none"
             : ""
         }`}
+        style={{ maxWidth: 'min(42rem, 100%)' }}
       >
         {renderControls()}
       </div>
