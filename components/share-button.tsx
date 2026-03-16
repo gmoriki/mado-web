@@ -9,6 +9,32 @@ import { deflateSync, strToU8 } from "fflate";
 
 const ENCRYPT_THRESHOLD = 2000;
 
+/** クリップボードに書き込む（Clipboard API → execCommand フォールバック） */
+async function writeClipboard(text: string): Promise<void> {
+  // Clipboard API が使える場合はそちらを優先
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return;
+    } catch {
+      // ユーザージェスチャー切れ等で失敗 → フォールバック
+    }
+  }
+  // フォールバック: 一時的な textarea を使う
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.left = "-9999px";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand("copy");
+  } finally {
+    document.body.removeChild(ta);
+  }
+}
+
 interface ShareButtonProps {
   markdown: string;
   historyId?: string | null;
@@ -26,42 +52,55 @@ export function ShareButton({ markdown, historyId }: ShareButtonProps) {
     setWarning(null);
 
     try {
+      // 1. フラグメントURLを即座に生成（常に利用可能なフォールバック）
       const fragment = compressToFragment(markdown);
-      let url: string;
-      let isEncrypted = false;
+      const fragmentUrl = `${window.location.origin}/view#${fragment}`;
 
       if (fragment.length <= ENCRYPT_THRESHOLD) {
-        url = `${window.location.origin}/view#${fragment}`;
-      } else {
-        try {
-          const compressed = deflateSync(strToU8(markdown), { level: 9 });
-          const key = await generateKey();
-          const blob = await encrypt(compressed, key);
-          const id = await createPaste(blob);
-          const keyStr = await exportKey(key);
-          url = `${window.location.origin}/view?id=${id}#${keyStr}`;
-          isEncrypted = true;
-        } catch {
-          // 暗号化失敗時はフラグメントモードにフォールバック
-          url = `${window.location.origin}/view#${fragment}`;
-          setWarning(
-            "暗号化共有に失敗しました。長いURLとして共有します。",
-          );
-        }
+        // 短い → フラグメントURLをそのままコピー
+        await writeClipboard(fragmentUrl);
+        if (historyId) markAsShared(historyId);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 3000);
+        return;
       }
 
-      await navigator.clipboard.writeText(url);
-      if (historyId) {
-        markAsShared(historyId, isEncrypted ? url : undefined);
+      // 2. 長文: まずフラグメントURLをクリップボードに確保（ユーザージェスチャー内）
+      await writeClipboard(fragmentUrl);
+
+      // 3. バックグラウンドで暗号化ペーストを試行
+      try {
+        const compressed = deflateSync(strToU8(markdown), { level: 9 });
+        const key = await generateKey();
+        const blob = await encrypt(compressed, key);
+        const id = await createPaste(blob);
+        const keyStr = await exportKey(key);
+        const encryptedUrl = `${window.location.origin}/view?id=${id}#${keyStr}`;
+
+        // 暗号化URLでクリップボードを上書き
+        await writeClipboard(encryptedUrl);
+        if (historyId) markAsShared(historyId, encryptedUrl);
+        setEncrypted(true);
+        setCopied(true);
+        setTimeout(() => {
+          setCopied(false);
+          setEncrypted(false);
+        }, 3000);
+      } catch {
+        // 暗号化ペースト失敗 → フラグメントURLは既にコピー済み
+        if (historyId) markAsShared(historyId);
+        setWarning(
+          "暗号化共有に失敗しました。長いURLとして共有します。",
+        );
+        setCopied(true);
+        setTimeout(() => {
+          setCopied(false);
+          setWarning(null);
+        }, 4000);
       }
-      setEncrypted(isEncrypted);
-      setCopied(true);
-      setTimeout(() => {
-        setCopied(false);
-        setEncrypted(false);
-      }, 3000);
     } catch {
       setWarning("共有URLの生成に失敗しました");
+      setTimeout(() => setWarning(null), 4000);
     } finally {
       setSharing(false);
     }
@@ -91,7 +130,7 @@ export function ShareButton({ markdown, historyId }: ShareButtonProps) {
       </button>
       {copied && encrypted && (
         <p className="absolute top-full right-0 mt-1 whitespace-nowrap rounded-lg bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-3 py-1.5 text-xs text-emerald-600 dark:text-emerald-400 shadow-sm">
-          🔒 暗号化済み・90日間有効
+          暗号化済み・90日間有効
         </p>
       )}
       {warning && (
