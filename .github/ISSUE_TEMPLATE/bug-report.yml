@@ -1,0 +1,81 @@
+name: バグ報告
+description: 不具合やエラーの報告
+labels: ["bug"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 概要
+      description: どんなバグか簡潔に説明してください
+      placeholder: "例: 共有リンクを開くと白画面になる"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 再現手順
+      description: バグを再現する手順
+      placeholder: |
+        1. ホームでMarkdownを入力
+        2. 「文書にする」をクリック
+        3. 共有ボタンを押す
+        4. 生成されたリンクを開く
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期待する動作
+      description: 本来どう動くべきか
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 実際の動作
+      description: 現状どうなるか
+    validations:
+      required: true
+
+  - type: textarea
+    id: code-reference
+    attributes:
+      label: 該当コード
+      description: 関連するファイルパス・行番号・コードスニペット
+      render: markdown
+      placeholder: |
+        - `app/page.tsx` L19-25: sessionStorage復元ロジック
+
+        ```typescript
+        // 該当コードがあれば貼り付け
+        ```
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: 完了条件
+      description: 修正が完了したと判断する条件（チェックリスト形式推奨）
+      placeholder: |
+        - [ ] 共有リンクを開くとMarkdownが正しく表示される
+        - [ ] コンソールにエラーが出ない
+
+  - type: textarea
+    id: hints
+    attributes:
+      label: 実装ヒント
+      description: 参考になる既存コード・方針案があれば
+      placeholder: "例: lib/crypto.ts の decrypt 関数を確認"
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: 変更規模
+      options:
+        - "小（1ファイル以内）"
+        - "中（2-5ファイル）"
+        - "大（6ファイル以上 or 設計変更）"
+    validations:
+      required: true

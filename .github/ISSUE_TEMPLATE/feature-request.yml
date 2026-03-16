@@ -1,0 +1,77 @@
+name: 機能要望
+description: 新機能や改善の提案
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 概要
+      description: どんな機能・改善か簡潔に説明してください
+      placeholder: "例: ワークスペースでファイル検索ができるようにしたい"
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-behavior
+    attributes:
+      label: 現状の動作
+      description: 今どうなっているか（変更が必要な理由）
+      placeholder: |
+        例:
+        1. ワークスペースに多数のファイルがある場合
+        2. 目的のファイルを見つけるのにスクロールが必要
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: 期待する動作
+      description: どう変わってほしいか
+    validations:
+      required: true
+
+  - type: textarea
+    id: code-reference
+    attributes:
+      label: 該当コード
+      description: 関連するファイルパス・行番号・コードスニペット
+      render: markdown
+      placeholder: |
+        - `components/file-tree.tsx`: ファイルツリーのUI
+        - `lib/virtual-fs.ts`: 仮想ファイルシステムの型定義
+
+  - type: textarea
+    id: implementation-plan
+    attributes:
+      label: 対応方針（案）
+      description: 実装アプローチの案があれば
+      placeholder: |
+        - file-tree.tsx に検索inputを追加
+        - virtual-fs の VirtualFile[] をフィルタする関数を追加
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: 完了条件
+      description: 完了と判断する条件（チェックリスト形式推奨）
+      placeholder: |
+        - [ ] ファイル名で検索できる
+        - [ ] 検索結果をクリックするとファイルが開く
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: 補足
+      description: 関連Issue、参考情報、制約事項など
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: 変更規模
+      options:
+        - "小（1ファイル以内）"
+        - "中（2-5ファイル）"
+        - "大（6ファイル以上 or 設計変更）"
+    validations:
+      required: true
