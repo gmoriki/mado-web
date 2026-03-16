@@ -42,6 +42,7 @@
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.5",
     "@tailwindcss/postcss": "^4.1.6",
     "@tailwindcss/typography": "^0.5.16",
     "@testing-library/react": "^16.3.2",
@@ -50,6 +51,8 @@
     "@types/node": "^22.15.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^15.5.12",
     "jsdom": "^29.0.0",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.1.6",

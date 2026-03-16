@@ -6,7 +6,7 @@ import { markdownToHtml } from "@/lib/markdown";
 import { decompressFromFragment } from "@/lib/compress";
 import { importKey, decrypt } from "@/lib/crypto";
 import { getPaste, PasteError } from "@/lib/paste-client";
-import { addViewHistory, markAsShared } from "@/lib/share-history";
+import { addViewHistory } from "@/lib/share-history";
 import { inflateSync, strFromU8 } from "fflate";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { TableOfContents } from "@/components/toc";

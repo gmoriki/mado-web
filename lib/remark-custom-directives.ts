@@ -17,6 +17,7 @@ import { h } from "hastscript";
  */
 export function remarkCustomDirectives() {
   return (tree: Root) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     visit(tree, (node: any) => {
       if (node.type !== "containerDirective") return;
 
@@ -30,6 +31,7 @@ export function remarkCustomDirectives() {
 
         // Extract label (directiveLabel paragraph) and convert to span
         const labelChild = node.children?.find(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (c: any) => c.data?.directiveLabel
         );
         if (labelChild) {
