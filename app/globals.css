@@ -179,6 +179,17 @@ body {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
+/* Shiki dual-theme: swap to dark colors in dark mode */
+.dark .shiki,
+.dark .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}
+.prose :where(.shiki) {
+  padding: 1.25em;
+  border-radius: 0.75rem;
+  overflow-x: auto;
+}
 .prose :where(strong) {
   font-weight: 700;
 }
