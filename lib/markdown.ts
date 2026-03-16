@@ -8,7 +8,8 @@ import rehypeStringify from "rehype-stringify";
 import rehypeSlug from "rehype-slug";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import { renderMermaid } from "beautiful-mermaid";
-import { createHighlighter, type Highlighter } from "shiki";
+import { createHighlighterCore, type HighlighterCore } from "shiki/core";
+import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 
 const MERMAID_RE =
   /<pre><code class="language-mermaid">([\s\S]*?)<\/code><\/pre>/g;
@@ -16,17 +17,43 @@ const MERMAID_RE =
 const CODE_BLOCK_RE =
   /<pre><code class="language-(\w+)">([\s\S]*?)<\/code><\/pre>/g;
 
-let highlighterPromise: Promise<Highlighter> | null = null;
+let highlighterPromise: Promise<HighlighterCore> | null = null;
 
-function getHighlighter(): Promise<Highlighter> {
+function getHighlighter(): Promise<HighlighterCore> {
   if (!highlighterPromise) {
-    highlighterPromise = createHighlighter({
-      themes: ["github-dark", "github-light"],
-      langs: [
-        "javascript", "typescript", "python", "bash", "json", "html", "css",
-        "yaml", "markdown", "sql", "go", "rust", "java", "c", "cpp", "ruby",
-        "php", "swift", "kotlin", "shell", "diff", "toml", "xml", "tsx", "jsx",
+    highlighterPromise = createHighlighterCore({
+      themes: [
+        import("shiki/themes/github-dark.mjs"),
+        import("shiki/themes/github-light.mjs"),
       ],
+      langs: [
+        import("shiki/langs/javascript.mjs"),
+        import("shiki/langs/typescript.mjs"),
+        import("shiki/langs/python.mjs"),
+        import("shiki/langs/bash.mjs"),
+        import("shiki/langs/json.mjs"),
+        import("shiki/langs/html.mjs"),
+        import("shiki/langs/css.mjs"),
+        import("shiki/langs/yaml.mjs"),
+        import("shiki/langs/markdown.mjs"),
+        import("shiki/langs/sql.mjs"),
+        import("shiki/langs/go.mjs"),
+        import("shiki/langs/rust.mjs"),
+        import("shiki/langs/java.mjs"),
+        import("shiki/langs/c.mjs"),
+        import("shiki/langs/cpp.mjs"),
+        import("shiki/langs/ruby.mjs"),
+        import("shiki/langs/php.mjs"),
+        import("shiki/langs/swift.mjs"),
+        import("shiki/langs/kotlin.mjs"),
+        import("shiki/langs/shell.mjs"),
+        import("shiki/langs/diff.mjs"),
+        import("shiki/langs/toml.mjs"),
+        import("shiki/langs/xml.mjs"),
+        import("shiki/langs/tsx.mjs"),
+        import("shiki/langs/jsx.mjs"),
+      ],
+      engine: createJavaScriptRegexEngine(),
     });
   }
   return highlighterPromise;
@@ -111,7 +138,13 @@ async function highlightCodeBlocks(html: string): Promise<string> {
   const matches = [...html.matchAll(CODE_BLOCK_RE)];
   if (matches.length === 0) return html;
 
-  const highlighter = await getHighlighter();
+  let highlighter: HighlighterCore;
+  try {
+    highlighter = await getHighlighter();
+  } catch {
+    return html;
+  }
+
   const loadedLangs = highlighter.getLoadedLanguages();
   let result = html;
 
@@ -122,15 +155,19 @@ async function highlightCodeBlocks(html: string): Promise<string> {
 
     if (!loadedLangs.includes(lang)) continue;
 
-    const highlighted = highlighter.codeToHtml(code, {
-      lang,
-      themes: { light: "github-light", dark: "github-dark" },
-    });
+    try {
+      const highlighted = highlighter.codeToHtml(code, {
+        lang,
+        themes: { light: "github-light", dark: "github-dark" },
+      });
 
-    result =
-      result.slice(0, match.index!) +
-      highlighted +
-      result.slice(match.index! + match[0].length);
+      result =
+        result.slice(0, match.index!) +
+        highlighted +
+        result.slice(match.index! + match[0].length);
+    } catch {
+      // Keep original code block on error
+    }
   }
 
   return result;
