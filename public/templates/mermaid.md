@@ -4,85 +4,83 @@
 
 ---
 
-## ガントチャート
+## フローチャート
 
 ```mermaid
-gantt
-    title プロジェクトスケジュール
-    dateFormat  YYYY-MM-DD
-    section 設計
-    要件定義      :done, des1, 2026-03-01, 2026-03-07
-    UI設計        :done, des2, after des1, 5d
-    DB設計        :active, des3, after des1, 4d
-    section 開発
-    フロントエンド :dev1, after des2, 10d
-    バックエンド   :dev2, after des3, 12d
-    API連携       :dev3, after dev1, 5d
-    section テスト
-    単体テスト    :test1, after dev2, 5d
-    結合テスト    :test2, after dev3, 5d
-    リリース      :milestone, after test2, 0d
+flowchart TD
+    A[ユーザーがアクセス] --> B{ログイン済み?}
+    B -->|Yes| C[ダッシュボード表示]
+    B -->|No| D[ログイン画面]
+    D --> E[認証処理]
+    E -->|成功| C
+    E -->|失敗| F[エラー表示]
+    F --> D
+    C --> G[機能選択]
+    G --> H[データ閲覧]
+    G --> I[設定変更]
+    G --> J[レポート出力]
 ```
 
 ---
 
-## パイ図（円グラフ）
+## 状態遷移図
 
 ```mermaid
-pie title アクセス元デバイス（2026年3月）
-    "スマートフォン" : 58
-    "デスクトップ" : 32
-    "タブレット" : 7
-    "その他" : 3
+stateDiagram-v2
+    [*] --> 下書き
+    下書き --> レビュー中 : 提出
+    レビュー中 --> 修正中 : 差し戻し
+    修正中 --> レビュー中 : 再提出
+    レビュー中 --> 承認済み : 承認
+    承認済み --> 公開中 : 公開
+    公開中 --> アーカイブ : 期限切れ
+    公開中 --> 修正中 : 修正依頼
+    アーカイブ --> [*]
 ```
 
 ---
 
-## マインドマップ
+## ER図
 
 ```mermaid
-mindmap
-  root((Webアプリ設計))
-    フロントエンド
-      React / Next.js
-      Tailwind CSS
-      状態管理
-        useState
-        Context
-    バックエンド
-      API設計
-        REST
-        GraphQL
-      データベース
-        PostgreSQL
-        Redis
-    インフラ
-      Cloudflare
-        Pages
-        Workers
-      監視
-        ログ
-        アラート
+erDiagram
+    USER ||--o{ DOCUMENT : creates
+    USER ||--o{ SHARE_HISTORY : has
+    DOCUMENT ||--o{ SHARE_HISTORY : generates
+    DOCUMENT {
+        string id PK
+        string title
+        text content
+        datetime created_at
+        datetime updated_at
+    }
+    USER {
+        string id PK
+        string email
+        string name
+        datetime registered_at
+    }
+    SHARE_HISTORY {
+        string id PK
+        string document_id FK
+        string user_id FK
+        string share_url
+        boolean is_active
+        datetime shared_at
+    }
 ```
 
 ---
 
-## ジャーニーマップ
+## XYチャート
 
 ```mermaid
-journey
-    title ユーザーの文書共有体験
-    section 作成
-      AIに質問する: 5: ユーザー
-      回答をコピーする: 4: ユーザー
-    section 変換
-      madoにペーストする: 5: ユーザー
-      プレビューを確認する: 4: ユーザー
-      フォントを選ぶ: 3: ユーザー
-    section 共有
-      共有ボタンを押す: 5: ユーザー
-      リンクを送る: 5: ユーザー
-      相手が閲覧する: 5: 受信者
+xychart-beta
+    title "月別アクセス数（2026年）"
+    x-axis [1月, 2月, 3月, 4月, 5月, 6月]
+    y-axis "アクセス数" 0 --> 5000
+    bar [1200, 1800, 3200, 2800, 4100, 4500]
+    line [1200, 1800, 3200, 2800, 4100, 4500]
 ```
 
 ---
