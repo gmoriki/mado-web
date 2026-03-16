@@ -105,8 +105,8 @@ export default function HistoryPage() {
       ) : (
         <>
           {/* 検索 + フィルター + 並び替え */}
-          <div className="mb-5 flex flex-wrap items-center gap-2">
-            <div className="relative flex-1 min-w-0 max-w-xs">
+          <div className="mb-5 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2">
+            <div className="relative w-full sm:w-auto sm:flex-1 sm:min-w-0 sm:max-w-xs">
               <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)]">
                 <circle cx="11" cy="11" r="8" />
                 <path d="m21 21-4.3-4.3" />

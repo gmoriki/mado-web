@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { BlurReveal } from "@/components/ui/blur-reveal";
 import { PasteArea } from "@/components/paste-area";
@@ -11,23 +11,30 @@ import type { VirtualFile } from "@/lib/virtual-fs";
 const STORAGE_KEY = "mado-markdown";
 const WORKSPACE_KEY = "mado-workspace";
 
+const TEMPLATES = [
+  { id: "general", label: "総合サンプル", path: "/sample.md" },
+  { id: "meeting", label: "議事録", path: "/templates/meeting.md" },
+  { id: "mermaid", label: "図解ショーケース", path: "/templates/mermaid.md" },
+  { id: "tech-doc", label: "技術ドキュメント", path: "/templates/tech-doc.md" },
+  { id: "kpt", label: "振り返り（KPT）", path: "/templates/kpt.md" },
+];
+
 export default function HomePage() {
   const [markdown, setMarkdown] = useState("");
-  const [hasRestored, setHasRestored] = useState(false);
+  const [showTemplates, setShowTemplates] = useState(false);
+  const templateRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   useEffect(() => {
-    const saved = sessionStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      setMarkdown(saved);
-      setHasRestored(true);
-    }
-  }, []);
-
-  const handleMarkdownChange = (val: string) => {
-    setMarkdown(val);
-    if (hasRestored) setHasRestored(false);
-  };
+    if (!showTemplates) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (templateRef.current && !templateRef.current.contains(e.target as Node)) {
+        setShowTemplates(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showTemplates]);
 
   const handleView = () => {
     if (!markdown.trim()) return;
@@ -45,8 +52,9 @@ export default function HomePage() {
     router.push("/workspace");
   };
 
-  const handleSample = () => {
-    fetch("/sample.md")
+  const handleTemplate = (path: string) => {
+    setShowTemplates(false);
+    fetch(path)
       .then((r) => r.text())
       .then((text) => {
         sessionStorage.setItem(STORAGE_KEY, text);
@@ -76,10 +84,9 @@ export default function HomePage() {
       {/* Paste Area */}
       <PasteArea
         value={markdown}
-        onChange={handleMarkdownChange}
+        onChange={setMarkdown}
         onSubmit={handleView}
         fontClass="font-sans"
-        showRestored={hasRestored}
       />
 
       {/* CTA */}
@@ -93,12 +100,27 @@ export default function HomePage() {
         >
           文書にする
         </PopButton>
-        <button
-          onClick={handleSample}
-          className="text-sm font-medium text-[var(--primary)] underline underline-offset-4 transition-colors hover:opacity-70"
-        >
-          サンプルを見る
-        </button>
+        <div ref={templateRef} className="relative">
+          <button
+            onClick={() => setShowTemplates((v) => !v)}
+            className="text-sm font-medium text-[var(--primary)] underline underline-offset-4 transition-colors hover:opacity-70"
+          >
+            サンプルを見る
+          </button>
+          {showTemplates && (
+            <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-52 rounded-xl border border-[var(--border)] bg-[var(--card)] py-1 shadow-lg z-50">
+              {TEMPLATES.map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => handleTemplate(t.path)}
+                  className="block w-full px-4 py-2 text-left text-sm text-[var(--card-foreground)] transition-colors hover:bg-[var(--muted)]"
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* File/Folder Upload */}
