@@ -1,7 +1,7 @@
 {
   "name": "mado-web",
   "version": "0.1.0",
-  "description": "ブラウザ完結でMarkdownを美しく閲覧・共有できるWebアプリ",
+  "description": "Markdownを美しく閲覧・共有できるWebアプリ（E2E暗号化対応）",
   "private": true,
   "license": "MIT",
   "author": "gmoriki",
@@ -14,7 +14,8 @@
     "dev": "next dev --turbopack -p 3005",
     "build": "next build",
     "start": "npx serve out",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "vitest run"
   },
   "dependencies": {
     "@fontsource/line-seed-jp": "^5.2.1",
@@ -43,12 +44,16 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.6",
     "@tailwindcss/typography": "^0.5.16",
+    "@testing-library/react": "^16.3.2",
     "@types/hast": "^3.0.4",
     "@types/mdast": "^4.0.4",
     "@types/node": "^22.15.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
+    "jsdom": "^29.0.0",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.1.6",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^4.1.0"
   }
 }

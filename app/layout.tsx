@@ -10,20 +10,29 @@ export const metadata: Metadata = {
     default: "mado web — AIの回答を、そのまま共有リンクに",
     template: "%s | mado web",
   },
-  description: "Markdownをブラウザで美しく表示・共有。AIの回答をペーストするだけ。アカウント不要、データは端末内で完結。",
+  description: "Markdownをブラウザで美しく表示・共有。AIの回答をペーストするだけ。アカウント不要、E2E暗号化対応。",
   metadataBase: new URL("https://mado-web.com"),
   openGraph: {
     title: "mado web — AIの回答を、そのまま共有リンクに",
-    description: "Markdownをブラウザで美しく表示・共有。AIの回答をペーストするだけ。アカウント不要、データは端末内で完結。",
+    description: "Markdownをブラウザで美しく表示・共有。AIの回答をペーストするだけ。アカウント不要、E2E暗号化対応。",
     url: "https://mado-web.com",
     siteName: "mado web",
     locale: "ja_JP",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "mado web — AIの回答を、そのまま共有リンクに",
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "mado web",
     description: "AIの回答をペーストするだけ。美しい文書として表示・共有できるブラウザツール",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "https://mado-web.com",

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { markdownToHtml } from "@/lib/markdown";
 import { decompressFromFragment } from "@/lib/compress";
 import { importKey, decrypt } from "@/lib/crypto";
-import { getPaste } from "@/lib/paste-client";
+import { getPaste, PasteError } from "@/lib/paste-client";
 import { addViewHistory, markAsShared } from "@/lib/share-history";
 import { inflateSync, strFromU8 } from "fflate";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
@@ -119,8 +119,17 @@ export default function ViewPage() {
           let encryptedData: Uint8Array;
           try {
             encryptedData = await getPaste(pasteId);
-          } catch {
-            setError("共有ドキュメントが見つかりません。期限切れ（90日）の可能性があります。");
+          } catch (err) {
+            if (err instanceof PasteError) {
+              const messages: Record<string, string> = {
+                not_found: "共有ドキュメントが見つかりません。期限切れ（90日）の可能性があります。",
+                timeout: "サーバーへの接続がタイムアウトしました。時間をおいて再度お試しください。",
+                network: "ネットワークに接続できません。インターネット接続を確認してください。",
+              };
+              setError(messages[err.kind] || "サーバーエラーが発生しました。時間をおいて再度お試しください。");
+            } else {
+              setError("共有ドキュメントが見つかりません。期限切れ（90日）の可能性があります。");
+            }
             setLoading(false);
             return;
           }
@@ -239,7 +248,7 @@ export default function ViewPage() {
         {isEncrypted && (
           <div className="group relative ml-auto">
             <div className="rounded-full p-1 text-emerald-500 dark:text-emerald-400 hover:bg-emerald-500/10 transition-colors cursor-default">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>

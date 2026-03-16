@@ -170,9 +170,9 @@ function PrivacyCard() {
           </svg>
         </div>
         <div>
-          <h3 className="font-semibold text-[var(--foreground)]">データはあなたの端末だけで処理</h3>
+          <h3 className="font-semibold text-[var(--foreground)]">E2E暗号化で安全に共有</h3>
           <p className="text-sm text-[var(--muted-foreground)]">
-            あなたのデータはブラウザ内で完結。サーバーには一切送信されません。
+            共有時はE2E暗号化。原文がサーバーに渡ることはありません。
           </p>
         </div>
       </div>

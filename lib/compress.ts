@@ -24,8 +24,3 @@ export function decompressFromFragment(fragment: string): string {
   return strFromU8(inflateSync(bytes));
 }
 
-export function estimateFragmentLength(markdown: string): number {
-  return compressToFragment(markdown).length;
-}
-
-export const URL_LENGTH_WARNING = 8000;

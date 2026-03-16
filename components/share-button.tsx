@@ -4,36 +4,11 @@ import { useState } from "react";
 import { compressToFragment } from "@/lib/compress";
 import { markAsShared } from "@/lib/share-history";
 import { generateKey, exportKey, encrypt } from "@/lib/crypto";
-import { createPaste } from "@/lib/paste-client";
+import { createPaste, PasteError } from "@/lib/paste-client";
 import { deflateSync, strToU8 } from "fflate";
 
-const ENCRYPT_THRESHOLD = 2000;
-
-/** クリップボードに書き込む（Clipboard API → execCommand フォールバック） */
-async function writeClipboard(text: string): Promise<void> {
-  // Clipboard API が使える場合はそちらを優先
-  if (navigator.clipboard?.writeText) {
-    try {
-      await navigator.clipboard.writeText(text);
-      return;
-    } catch {
-      // ユーザージェスチャー切れ等で失敗 → フォールバック
-    }
-  }
-  // フォールバック: 一時的な textarea を使う
-  const ta = document.createElement("textarea");
-  ta.value = text;
-  ta.style.position = "fixed";
-  ta.style.left = "-9999px";
-  ta.style.opacity = "0";
-  document.body.appendChild(ta);
-  ta.select();
-  try {
-    document.execCommand("copy");
-  } finally {
-    document.body.removeChild(ta);
-  }
-}
+// フラグメントURLの最大長（これ以下なら直接URLに埋め込む）
+const MAX_FRAGMENT_URL = 150;
 
 interface ShareButtonProps {
   markdown: string;
@@ -52,45 +27,67 @@ export function ShareButton({ markdown, historyId }: ShareButtonProps) {
     setWarning(null);
 
     try {
-      // 1. フラグメントURLを即座に生成（常に利用可能なフォールバック）
       const fragment = compressToFragment(markdown);
-      const fragmentUrl = `${window.location.origin}/view#${fragment}`;
+      const origin = window.location.origin;
 
-      if (fragment.length <= ENCRYPT_THRESHOLD) {
-        // 短い → フラグメントURLをそのままコピー
-        await writeClipboard(fragmentUrl);
+      if (fragment.length <= MAX_FRAGMENT_URL) {
+        await navigator.clipboard.writeText(`${origin}/view#${fragment}`);
         if (historyId) markAsShared(historyId);
         setCopied(true);
         setTimeout(() => setCopied(false), 3000);
         return;
       }
 
-      // 2. 長文: まずフラグメントURLをクリップボードに確保（ユーザージェスチャー内）
-      await writeClipboard(fragmentUrl);
+      // 暗号化ペーストで短いURLを生成
+      // ClipboardItem に Promise を渡すことで、ユーザージェスチャー内で
+      // クリップボード書き込みを登録し、内容は非同期で解決する
+      let resultUrl = "";
+      let pasteSucceeded = false;
 
-      // 3. バックグラウンドで暗号化ペーストを試行
-      try {
-        const compressed = deflateSync(strToU8(markdown), { level: 9 });
-        const key = await generateKey();
-        const blob = await encrypt(compressed, key);
-        const id = await createPaste(blob);
-        const keyStr = await exportKey(key);
-        const encryptedUrl = `${window.location.origin}/view?id=${id}#${keyStr}`;
+      let pasteErrorKind: string | null = null;
 
-        // 暗号化URLでクリップボードを上書き
-        await writeClipboard(encryptedUrl);
-        if (historyId) markAsShared(historyId, encryptedUrl);
+      const urlPromise = (async (): Promise<string> => {
+        try {
+          const compressed = deflateSync(strToU8(markdown), { level: 9 });
+          const key = await generateKey();
+          const blob = await encrypt(compressed, key);
+          const id = await createPaste(blob);
+          const keyStr = await exportKey(key);
+          resultUrl = `${origin}/view?id=${id}#${keyStr}`;
+          pasteSucceeded = true;
+          return resultUrl;
+        } catch (err) {
+          if (err instanceof PasteError) pasteErrorKind = err.kind;
+          resultUrl = `${origin}/view#${fragment}`;
+          return resultUrl;
+        }
+      })();
+
+      const blobPromise = urlPromise.then(
+        (url) => new Blob([url], { type: "text/plain" }),
+      );
+      const item = new ClipboardItem({
+        "text/plain": blobPromise as Promise<Blob>,
+      });
+      await navigator.clipboard.write([item]);
+
+      if (pasteSucceeded) {
+        if (historyId) markAsShared(historyId, resultUrl);
         setEncrypted(true);
         setCopied(true);
         setTimeout(() => {
           setCopied(false);
           setEncrypted(false);
         }, 3000);
-      } catch {
-        // 暗号化ペースト失敗 → フラグメントURLは既にコピー済み
+      } else {
         if (historyId) markAsShared(historyId);
+        const warningMessages: Record<string, string> = {
+          timeout: "サーバーへの接続がタイムアウトしました。長いURLで共有します。",
+          network: "ネットワークに接続できません。長いURLで共有します。",
+        };
         setWarning(
-          "暗号化共有に失敗しました。長いURLとして共有します。",
+          (pasteErrorKind && warningMessages[pasteErrorKind]) ||
+          "サーバーに接続できませんでした。長いURLで共有します。"
         );
         setCopied(true);
         setTimeout(() => {
@@ -111,16 +108,17 @@ export function ShareButton({ markdown, historyId }: ShareButtonProps) {
       <button
         onClick={handleShare}
         disabled={sharing}
+        aria-label={sharing ? "共有リンクを生成中" : copied ? "共有リンクをコピーしました" : "共有リンクを生成"}
         className="inline-flex items-center gap-1.5 sm:gap-2 rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 sm:px-4 py-2 text-sm font-medium text-[var(--card-foreground)] transition-colors hover:bg-[var(--muted)] disabled:opacity-50"
       >
         {sharing ? (
           <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
         ) : copied ? (
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500">
             <path d="M20 6 9 17l-5-5" />
           </svg>
         ) : (
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
             <polyline points="16 6 12 2 8 6" />
             <line x1="12" x2="12" y1="2" y2="15" />

@@ -36,6 +36,8 @@ export function ModeToggle({ mode, onChange }: ModeToggleProps) {
         <button
           key={m.value}
           onClick={() => onChange(m.value)}
+          aria-label={`${m.label}モードに切り替え`}
+          aria-pressed={mode === m.value}
           className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
             mode === m.value
               ? "bg-[var(--card)] text-[var(--card-foreground)] shadow-sm"

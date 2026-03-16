@@ -69,7 +69,7 @@ export default function HomePage() {
           Markdownを美しく表示。リンクひとつで安全に共有。
         </p>
         <p className="mt-1.5 text-xs text-[var(--muted-foreground)]">
-          🔒 ブラウザ完結・外部送信なし
+          🔒 E2E暗号化・原文はサーバーに送信されません
         </p>
       </div>
 
@@ -95,7 +95,7 @@ export default function HomePage() {
         </PopButton>
         <button
           onClick={handleSample}
-          className="text-sm text-[var(--muted-foreground)] underline underline-offset-4 transition-colors hover:text-[var(--foreground)]"
+          className="text-sm font-medium text-[var(--primary)] underline underline-offset-4 transition-colors hover:opacity-70"
         >
           サンプルを見る
         </button>

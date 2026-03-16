@@ -1,0 +1,7 @@
+name = "mado-web"
+compatibility_date = "2024-12-01"
+pages_build_output_dir = "out"
+
+[[kv_namespaces]]
+binding = "KV_BINDING"
+id = "b89a39c65eac4d71b22e3f92b03f6d5b"

@@ -12,6 +12,16 @@ import { renderMermaid } from "beautiful-mermaid";
 const MERMAID_RE =
   /<pre><code class="language-mermaid">([\s\S]*?)<\/code><\/pre>/g;
 
+const mermaidCache = new Map<string, string>();
+
+function hashCode(str: string): string {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash + str.charCodeAt(i)) | 0;
+  }
+  return String(hash);
+}
+
 function decodeHtmlEntities(text: string): string {
   const map: Record<string, string> = {
     "&amp;": "&",
@@ -37,14 +47,19 @@ async function renderMermaidBlocks(html: string): Promise<string> {
   for (let i = matches.length - 1; i >= 0; i--) {
     const match = matches[i];
     const code = decodeHtmlEntities(match[1]).trim();
+    const cacheKey = hashCode(code);
     try {
-      const svg = await renderMermaid(code, {
-        bg: "var(--card)",
-        fg: "var(--foreground)",
-        font: "LINE Seed JP, system-ui, sans-serif",
-        padding: 32,
-        transparent: true,
-      });
+      let svg = mermaidCache.get(cacheKey);
+      if (!svg) {
+        svg = await renderMermaid(code, {
+          bg: "var(--card)",
+          fg: "var(--foreground)",
+          font: "LINE Seed JP, system-ui, sans-serif",
+          padding: 32,
+          transparent: true,
+        });
+        mermaidCache.set(cacheKey, svg);
+      }
       const wrapped = `<div class="mermaid-diagram">${svg}</div>`;
       result =
         result.slice(0, match.index!) +

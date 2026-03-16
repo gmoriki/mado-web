@@ -1,5 +1,5 @@
 const ALGO = "AES-GCM";
-const KEY_BITS = 256;
+const KEY_BITS = 128;
 const IV_BYTES = 12;
 
 export async function generateKey(): Promise<CryptoKey> {
@@ -26,10 +26,12 @@ export async function importKey(encoded: string): Promise<CryptoKey> {
   const bin = atob(b64);
   const raw = new Uint8Array(bin.length);
   for (let i = 0; i < bin.length; i++) raw[i] = bin.charCodeAt(i);
+  // 鍵長を自動判定（16バイト=AES-128, 32バイト=AES-256）で既存URLと後方互換
+  const bits = raw.length === 16 ? 128 : raw.length === 32 ? 256 : KEY_BITS;
   return crypto.subtle.importKey(
     "raw",
     raw,
-    { name: ALGO, length: KEY_BITS },
+    { name: ALGO, length: bits },
     false,
     ["decrypt"],
   );
